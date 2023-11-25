@@ -496,7 +496,7 @@ class MetaSearch extends AbstractModule implements
         $this->checkModuleVersionUpdate();
 		
         //Error if tree name is not valid
-        elseif (!$this->isValidTree($tree_name)) {
+        if (!$this->isValidTree($tree_name)) {
 			$response = $this->showErrorMessage(I18N::translate('Tree not found') . ': ' . $tree_name);
 		}
         //Error if privacy level is not valid
