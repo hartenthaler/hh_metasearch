@@ -12,15 +12,16 @@ use Fisharebest\Webtrees\View;
 
 /**
  * @var  string		$title
+ * @var  string		$description
  * @var  array      $tree_list
- * @var  bool		$use_hash
+ * @var  int		$max_hit
  * @var  string		$secret_key
+ * @var  bool		$use_hash
  */
  
 /**
  * Soll/kann mit Hash/Key gearbeitet werden?
  * Die zu durchsuchenden Trees müssen einzeln aus/abgewählt werden können; es kommen nur für Gäste sichtbare Trees in Frage.
- * Pro Tree gibt es eine maximale Trefferzahl
  */
 
 ?>
@@ -28,6 +29,7 @@ use Fisharebest\Webtrees\View;
 <?= view('components/breadcrumbs', ['links' => [route(ControlPanel::class) => I18N::translate('Control panel'), $title]]) ?>
 
 <h1><?=e($title) ?></h1>
+<p><?=e($description) ?></p>
 
 <form method="post">
 	<?= csrf_field() ?>
@@ -82,10 +84,18 @@ use Fisharebest\Webtrees\View;
 			</div>
 		</fieldset>				
 
-		<h3><?= I18N::translate('Default settings for downloads') ?></h3>		
-		<p><?= I18N::translate('These default settings are used if no specific parameter values are provided within the URL. By specifying the default values, the URLs to be called for a download can be simplified. If the default values shall be used for a download, it is sufficient to only provide the "key" parameter (authorization key) in the URL. Please note that the default settings can only be used after saving at least once (i.e. by pressing the "Save" button).') ?></p>	
-		<p><?= I18N::translate('Any parameters provided in the URL have a higher priority and will overrule the default settings.') ?></p>
+		<h3><?= I18N::translate('Select trees to be searched') ?></h3>
 
+		<h3><?= I18N::translate('Define maximum number of hits per tree') ?></h3>
+		<div class="row mb-3">
+			<label class="col-sm-3 col-form-label wt-page-options-label" for="max_hit">
+				<?= I18N::translate('Maximum number of hits (greater or equal 1)') ?>
+			</label>
+			<div class="col-sm-9 wt-page-options-value">
+				<input class="form-control" id="max_hit" name="max_hit" type="int">
+			</div>
+		</div>
+		
 		<div class="col">
 			<p></p>
 			<button type="submit" class="btn btn-primary">
@@ -95,24 +105,6 @@ use Fisharebest\Webtrees\View;
 		</div>
 	</div>
 </form>	
-
-<form method="post" action="<?= e(route(MetaSearch::class, [
-					'key'                 => 'test_downlaod',
-					'test_downlaod_token' => md5($secret_key . Session::getCsrfToken()),
-					])) ?>">
-	<?= csrf_field() ?>
-	<div class="row mb-3 justify-content-between m-0">
-		<div class="col">
-			<button type="submit" class="btn btn-secondary">
-				<?= view('icons/save') ?>
-				<?= I18N::translate('Test Download') ?>
-			</button>
-			<div class="form-text">
-				<?= I18N::translate('In order to use changed settings for a test download, the settings need to be saved first.')?>
-			</div>
-		</div>
-	</div>
-</form>
 
 <?php View::push('javascript') ?>
 <script>

@@ -2,10 +2,12 @@
 
 /**
  * MetaSearch - hh_metasearch (webtrees custom module)
- * Copyright (C) 2023 Hermann Hartenthaler
+ *
  * Function: supports MetaSuche at https://meta.genealogy.net/.
  * see https://wiki.genealogy.net/Metasuche/neue_Schnittstelle
  *
+ * Copyright (C) 2023 Hermann Hartenthaler
+ * 
  * webtrees: online genealogy / web based family history software
  * Copyright (C) 2023 webtrees development team
  *                    <http://webtrees.net>
@@ -23,13 +25,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
- 
+
 declare(strict_types=1);
 
 namespace Hartenthaler\Webtrees\Module\MetaSearch;
 
-use function app;
+use Fisharebest\Webtrees\Auth;
+use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Tree;
 
-require __DIR__ . '/MetaSearch.php';
+/**
+ * MetaSearchService
+ */
+class MetaSearchService
+{
+    public const ACCESS_LEVELS = [
+        'gedadmin' => Auth::PRIV_NONE,
+        'user'     => Auth::PRIV_USER,
+        'visitor'  => Auth::PRIV_PRIVATE,
+        'none'     => Auth::PRIV_HIDE,
+    ];
 
-return app(MetaSearch::class);
+    private ResponseFactoryInterface $response_factory;
+    
+    /**
+     * @param ResponseFactoryInterface $response_factory
+     */
+	public function __construct(ResponseFactoryInterface $response_factory)
+	{
+		$this->response_factory = $response_factory;
+	}
+}
