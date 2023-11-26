@@ -106,10 +106,12 @@ class MetaSearch extends AbstractModule implements
 
     // Prefences, Settings
 	public const PREF_MODULE_VERSION 	= 'module_version'; //tbd wozu?
-	public const PREF_SECRET_KEY 		= "secret_key";
-	public const PREF_USE_HASH 			= "use_hash";
+	public const PREF_SECRET_KEY 		= 'secret_key';
+	public const PREF_USE_HASH 			= 'use_hash';
 	public const PREF_MAX_HIT_DEFAULT	= 20;
-	public const PREF_MAX_HIT			= self::PREF_MAX_HIT_DEFAULT;
+	public const PREF_MAX_HIT			= 'max_hit';
+	public const PREF_DATABASE_NAME		= 'Ahnendatenbank Hartenthaler';
+	public const PREF_DATABASE_URL		= 'https://ahnen.hartenthaler.eu';
 
 
 	// Alert tpyes
@@ -316,9 +318,9 @@ class MetaSearch extends AbstractModule implements
             $this->name() . '::settings',
             [
                 'title'             	=> $this->title(),
-				'description'  			=> $this->description();
+				'description'  			=> $this->description(),
                 'tree_list'             => $tree_list,
-				self::PREF_MAX_HIT		=> $this->getPreference(self::PREF_MAX_HIT, self::PREF_MAX_HIT_DEFAULT),
+				self::PREF_MAX_HIT		=> $this->getPreference(self::PREF_MAX_HIT, strval(self::PREF_MAX_HIT_DEFAULT)),
 				self::PREF_SECRET_KEY   => $this->getPreference(self::PREF_SECRET_KEY, ''),
 				self::PREF_USE_HASH     => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
             ]
@@ -337,7 +339,7 @@ class MetaSearch extends AbstractModule implements
         $save          	= Validator::parsedBody($request)->string('save', '');
         $use_hash       = Validator::parsedBody($request)->boolean(self::PREF_USE_HASH, false);
         $new_secret_key = Validator::parsedBody($request)->string('new_secret_key', '');
-		$max_hit		= Validator::parsedBody($request)->int(self::PREF_MAX_HIT, 20);
+		$max_hit		= Validator::parsedBody($request)->integer(self::PREF_MAX_HIT, self::PREF_MAX_HIT_DEFAULT);
         
         // save the received settings to the user preferences
         if ($save === '1') {
@@ -384,7 +386,8 @@ class MetaSearch extends AbstractModule implements
             if(!$new_key_error) {
                 $this->setPreference(self::PREF_USE_HASH, $use_hash ? '1' : '0');
             }
-			$this->setPreference('max_hit', $use_hash ? '1' : '0');
+			//tbd prüfen ob max_hit größer 0 ist
+			$this->setPreference('max_hit', ($max_hit > 0) ? strval($max_hit) : strval(self::PREF_MAX_HIT_DEFAULT));
        
             // finally, show a success message
 			$message = I18N::translate('The preferences for the module "%s" were updated.', $this->title());
@@ -509,21 +512,16 @@ class MetaSearch extends AbstractModule implements
     {
 		//Load secret key from preferences
         $secret_key = $this->getPreference(self::PREF_SECRET_KEY, ''); 
-   		
-		$key       = Validator::queryParams($request)->string('key', '');
-		$tree_name = Validator::queryParams($request)->string('tree', $this->getPreference(self::PREF_DEFAULT_TREE_NAME, ''));
-
+   		$key        = Validator::queryParams($request)->string('key', '');
+		
 		//Check update of module version
         $this->checkModuleVersionUpdate();
 		
+		$tree_name = "kennedy";
         //Error if tree name is not valid
         if (!$this->isValidTree($tree_name)) {
 			$response = $this->showErrorMessage(I18N::translate('Tree not found') . ': ' . $tree_name);
 		}
-        //Error if privacy level is not valid
-		//elseif (!in_array($privacy, ['none', 'gedadmin', 'user', 'visitor'])) {
-		//	$response = $this->showErrorMessage(I18N::translate('Privacy level not accepted') . ': ' . $privacy);
-        //} 	
 
 		//If no errors, start the core activities of the module
 		else {

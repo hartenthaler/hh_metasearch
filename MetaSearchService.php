@@ -33,6 +33,11 @@ namespace Hartenthaler\Webtrees\Module\MetaSearch;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Tree;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * MetaSearchService
@@ -55,4 +60,16 @@ class MetaSearchService
 	{
 		$this->response_factory = $response_factory;
 	}
+	
+	//tbd Funktionen um die Parameter aus der URL zu lesen
+	//tbd Wenn lastname und placename und gov alle drei nicht angegeben oder leer sind: leeres JSON-Gerüst zurückgeben
+	//tbd Mit den und-verknüpften Parametern in allen Bäumen suchen und Trefferliste erstellen (bis jeweils max_hit+1)
+	//tbd Für alle Trees: Ausgabe des Datenbanknamens (mit Tree-Bezeichnung) und der URL in JSON (Funktionen dafür definieren)
+	//tbd Zu jedem einzelnen Tree maximal max_hit Treffer (jeweils Funktionen dafür definieren):
+	//		- Vollständiger höchstpriorer Name mit 1. Nachnamen (mit Pre+Postfix) und 2. Vornamen (inkl. Spitz- und Rufname)
+	//		- Details: * Geburtsjahr Geburtsort (PLAC) + Todesjahr und Todesort (PLAC)
+	//		- URL zum Treffer (enthält Hinweis auf den Tree)
+	//		- ggf. Kennzeichen "more"
+	//tbd JSON statt Text
+	
 }
