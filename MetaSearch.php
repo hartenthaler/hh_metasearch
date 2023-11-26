@@ -106,7 +106,7 @@ class MetaSearch extends AbstractModule implements
 	    $response_factory = app(ResponseFactoryInterface::class);
         $stream_factory = new Psr17Factory();
 
-        $this->gedcom_export_service = new MetaSearchService($response_factory, $stream_factory);
+        // $this->gedcom_export_service = new MetaSearchService($response_factory, $stream_factory);
     }
 
     /**
@@ -296,7 +296,6 @@ class MetaSearch extends AbstractModule implements
                 'tree_list'                           => $tree_list,
 				self::PREF_SECRET_KEY                 => $this->getPreference(self::PREF_SECRET_KEY, ''),
 				self::PREF_USE_HASH                   => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
-				self::PREF_ALLOW_DOWNLOAD             => boolval($this->getPreference(self::PREF_ALLOW_DOWNLOAD, '1')),
             ]
         );
     }
@@ -312,7 +311,6 @@ class MetaSearch extends AbstractModule implements
     {
         $save                       = Validator::parsedBody($request)->string('save', '');
         $use_hash                   = Validator::parsedBody($request)->boolean(self::PREF_USE_HASH, false);
-        $allow_download             = Validator::parsedBody($request)->boolean(self::PREF_ALLOW_DOWNLOAD, false);
         $new_secret_key             = Validator::parsedBody($request)->string('new_secret_key', '');
         
         //Save the received settings to the user preferences
@@ -359,11 +357,7 @@ class MetaSearch extends AbstractModule implements
             //Save settings to preferences
             if(!$new_key_error) {
                 $this->setPreference(self::PREF_USE_HASH, $use_hash ? '1' : '0');
-            }
-			$this->setPreference(self::PREF_ALLOW_DOWNLOAD, $allow_download ? '1' : '0');
-
-            //Save default settings to preferences
-            $this->setPreference(self::PREF_DEFAULT_TREE_NAME, $default_tree_name);           
+            }       
        
             //Finally, show a success message
 			$message = I18N::translate('The preferences for the module "%s" were updated.', $this->title());

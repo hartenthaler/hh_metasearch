@@ -28,27 +28,12 @@ use Fisharebest\Webtrees\View;
 	<input type="hidden" name="save" id="save" value="1">
 	<div class="row mb-3 justify-content-between m-0">
 		<div class="row mb-3"><?= view('icons/spacer') ?></div> 
-		<?php if ($allow_download) : ?>
-			<div class="alert alert-warning">
-				<p><?= I18N::translate('Currently, the download of GEDCOM files is allowed. Please note that everyone with access to the authorization key, can download GEDCOM files from your webtrees installation.') ?></p>
-			</div>
-		<?php endif ?>
 		<?php if (!$use_hash) : ?>
 			<div class="alert alert-warning">
 				<p><?= I18N::translate('Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments with limited users. Otherwise, please activate encrpytion of the authorization key.') ?></p>
 			</div>  
 		<?php endif ?>
-		<?php $data_folder = str_replace('\\', '/', Registry::filesystem()->dataName()) ?>
-		<?php $root_folder = str_replace('\\', '/', Registry::filesystem()->rootName()) ?>
-		<?php $data_folder_relative = str_replace($root_folder, '', $data_folder) ?>
 
-		<?php if (!str_starts_with($folder_to_save, $data_folder_relative)) : ?>
-			<div class="alert alert-warning">
-				<p>
-					<?= I18N::translate('Currently, the folder to save is not a sub-directory of the webtrees data folder. It is highly recommended to use the webtrees data folder or a sub-directory, because webtrees protects unauthorized access to this folder. If you choose a folder outside of the webtrees data folder, the saved GEDCOM file might be unprotected against unauthorized access.' ) ?>
-				</p>
-			</div>  
-		<?php endif ?>
 		<?php if ($secret_key === '') : ?>
 			<div class="alert alert-danger">
 				<p><?= I18N::translate('The authorization key is empty or not available') ?></p>
@@ -83,230 +68,18 @@ use Fisharebest\Webtrees\View;
 					<?= I18N::translate('Activate encryption of the authorization key') ?>
 				</legend>
 				<div class="col-sm-9">
-				<?= view('components/checkbox', ['label' => I18N::translate('Activate'), 'name' => DownloadGedcomWithURL::PREF_USE_HASH, 'checked' => $use_hash]) ?>
+				<?= view('components/checkbox', ['label' => I18N::translate('Activate'), 'name' => MetaSearch::PREF_USE_HASH, 'checked' => $use_hash]) ?>
 					<div class="form-text">
 						<?= I18N::translate('The encryption of the authorization key is more secure, because the authorization key is not visible to anyone and also encrypted in the database. However, the authorization key is not readible any more (e.g. for other administrators) and cannot be recovered if it is forgotten.'); ?>
 					</div>
 				</div>
 			</div>
 		</fieldset>				
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Allow download of GEDCOM files') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/checkbox', ['label' => I18N::translate('Allow'), 'name' => DownloadGedcomWithURL::PREF_ALLOW_DOWNLOAD, 'checked' => $allow_download]) ?>
-					<div class="form-text">
-						<?= I18N::translate('By un-selecting this option, it is possible to de-activate downloads. This setting might be used if GEDCOM files shall only be saved on the server, but not downloaded.'); ?>
-					</div>
-				</div>
-			</div>
-		</fieldset>		
-		<div class="row mb-3">
-			<label class="col-sm-3 col-form-label wt-page-options-label" for="folder_to_save">
-				<?= I18N::translate('Folder name') ?>
-			</label>
-			<div class="col-sm-9 wt-page-options-value">
-				<input class="form-control" id="folder_to_save" name="folder_to_save" type="text" value="<?= e($folder_to_save) ?>">
-			</div>
-			<div class="form-text col-sm-9 offset-sm-3">
-				<?= I18N::translate('Folder within the webtrees root path, where GEDCOM exports are saved. It is highly recommended to use the webtrees data folder or a sub-directory, because webtrees protects unauthorized access to the data folder. The current settings (Control panel / Website preferences) for the webtrees root and data folder are:'); ?> 
-				<br>
-				<b><?= I18N::translate('webtrees root folder') ?>: </b>
-				<?= Registry::filesystem()->rootName() ?>
-				<br>
-				<b><?= I18N::translate('webtrees data folder') ?>: </b>
-				<?= Registry::filesystem()->dataName() ?>
-				<br>
-				<b><?= I18N::translate('webtrees data folder (relative path)') ?>: </b>
-				<?= $data_folder_relative ?>
-				<br>		
-				<b><?= I18N::translate('webtrees data folder (setting in the control panel)') ?>: </b>
-				<?= Site::getPreference('INDEX_DIRECTORY') ?>
-			</div>			
-		</div>
 
 		<h3><?= I18N::translate('Default settings for downloads') ?></h3>		
 		<p><?= I18N::translate('These default settings are used if no specific parameter values are provided within the URL. By specifying the default values, the URLs to be called for a download can be simplified. If the default values shall be used for a download, it is sufficient to only provide the "key" parameter (authorization key) in the URL. Please note that the default settings can only be used after saving at least once (i.e. by pressing the "Save" button).') ?></p>	
 		<p><?= I18N::translate('Any parameters provided in the URL have a higher priority and will overrule the default settings.') ?></p>
 
-		<div class="row mb-3">
-			<label class="col-form-label col-sm-3">
-				<?= I18N::translate('Default tree') ?>
-			</label>
-			<div class="col-sm-3">
-				<?= view('components/select', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_TREE_NAME, 'selected' => $default_tree_name, 
-					'options' => $tree_list]) ?>
-			</div>
-			<div class="form-text col-sm-9 offset-sm-3">
-				<?= I18N::translate('Select the default tree. This tree will be chosen if no specific tree is provided as URL parameter.'); ?>
-			</div>
-		</div>
-		<div class="row mb-3">
-			<label class="col-sm-3 col-form-label wt-page-options-label" for="default_file_name">
-				<?= I18N::translate('Default file name') ?>
-			</label>
-			<div class="col-sm-9 wt-page-options-value">
-				<input class="form-control" id="default_file_name" name="default_file_name" type="text" value="<?= e($default_file_name) ?>">
-			</div>
-			<div class="form-text col-sm-9 offset-sm-3">
-				<?= I18N::translate('Specifiy the default file name. This file name will be chosen if no specific file name is provided as URL parameter.'); ?>
-			</div>
-		</div>
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default privacy level') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_PRIVACY_LEVEL,'selected' => $default_privacy_level, 
-						'options' => [
-							'none'     => 'none (' . I18N::translate('None') .')', 
-							'gedadmin' => 'gedadmin (' . I18N::translate('Manager') .')', 
-							'user'     => 'user (' . I18N::translate('Member') .')',  
-							'visitor'  => 'visitor (' . I18N::translate('Visitor') .')', 
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default privacy level. This privacy level will be chosen if no specific privacy level is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default export format') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_EXPORT_FORMAT, 'selected' => $default_export_format,
-						'options' => [
-							'gedcom'   => 'gedcom', 
-							'zip'      => 'zip', 
-							'zipmedia' => 'zipmedia (' . I18N::translate ('includes media files') .')', 
-							'gedzip'   => 'gedzip (' . I18N::translate ('includes media files') .')', 
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default export format. This export format will be chosen if no specific export format is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default encoding') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_ENCODING, 'selected' => $default_encoding,
-						'options' => [
-							UTF8::NAME        => UTF8::NAME, 
-							UTF16BE::NAME     => UTF16BE::NAME, 
-							ANSEL::NAME       => ANSEL::NAME, 
-							ASCII::NAME       => ASCII::NAME, 
-							Windows1252::NAME => Windows1252::NAME,
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default export format. This export format will be chosen if no specific export format is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default ending') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_ENDING, 'selected' => $default_ending,
-						'options' => [
-							'CRLF' => 'CRLF (Windows)',
-							'LF'   => 'LF (UNIX)',
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default ending. This ending will be chosen if no specific ending is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default action') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_ACTION, 'selected' => $default_action,
-						'options' => [
-							'download' => 'download (' . I18N::translate('Download') . ')',
-							'save'     => 'save (' . I18N::translate('Save') . ')',
-							'both'     => 'both (' . I18N::translate('Both, i.e. download and save in parallel') . ')',
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default action. This action will be chosen if no specific action is provided as URL parameter. If "both" is chosen, the file is downloaded and saved in parallel.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>		
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default time stamp') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_TIME_STAMP, 'selected' => $default_time_stamp,
-						'options' => [
-							'none'    => 'none (' . I18N::translate('No time stamp') . ')',
-							'prefix'  => 'prefix (' .  I18N::translate('Prefix time stamp') . ')',
-							'postfix' => 'postfix (' . I18N::translate('Postfix time stamp') . ')',
-						] 
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default time stamp. This time stamp will be chosen if no specific time stamp is provided as URL parameter. If "none" is chosen, no time stamp will be used.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>	
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default GEDCOM 7 flag') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_GEDCOM_VERSION, 'selected' => (int) $default_gedcom_version,
-						'options' => [
-							'0 (GEDCOM 5.5.1)', 
-							'1 (GEDCOM 7.0)',
-						]
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default GEDCOM version. This GEDCOM version will be chosen if no specific GEDCOM version is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>									
-		<fieldset class="mb-3">
-			<div class="row">
-				<legend class="col-form-label col-sm-3">
-					<?= I18N::translate('Default GEDCOM-L flag') ?>
-				</legend>
-				<div class="col-sm-9">
-					<?= view('components/radios-inline', ['name' => DownloadGedcomWithURL::PREF_DEFAULT_GEDCOM_L_SELECTION, 'selected' => (int) $default_gedcom_l_selection,
-						'options' => [
-							'0'  => '0 (' . I18N::translate('Do not use GEDCOM-L') . ')',
-							'1'  => '1 (' . I18N::translate('Use GEDCOM-L') . ')',
-						] 
-					]) ?>
-					<div class="form-text">
-						<?= I18N::translate('Select the default for GEDCOM-L usage. This GEDCOM-L setting will be chosen for GEDCOM 7.0 exports if no specific GEDCOM-L setting is provided as URL parameter.')?>
-					</div>
-				</div>
-			</div>
-		</fieldset>	
 		<div class="col">
 			<p></p>
 			<button type="submit" class="btn btn-primary">
@@ -317,7 +90,7 @@ use Fisharebest\Webtrees\View;
 	</div>
 </form>	
 
-<form method="post" action="<?= e(route(DownloadGedcomWithURL::class, [
+<form method="post" action="<?= e(route(MetaSearch::class, [
 					'key'                 => 'test_downlaod',
 					'test_downlaod_token' => md5($secret_key . Session::getCsrfToken()),
 					])) ?>">
