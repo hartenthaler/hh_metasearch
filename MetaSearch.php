@@ -93,6 +93,7 @@ class MetaSearch extends AbstractModule implements
 	public const PREF_MODULE_VERSION = 'module_version';
 	public const PREF_SECRET_KEY = "secret_key";
 	public const PREF_USE_HASH = "use_hash";
+	public const PREF_DEFAULT_TREE_NAME = "kennedy";
 
 	//Alert tpyes
 	public const ALERT_DANGER = 'alert_danger';
@@ -451,7 +452,7 @@ class MetaSearch extends AbstractModule implements
 		return $this->viewResponse($this->name() . '::alert', [
             'title'        	=> 'Error',
 			'tree'			=> null,
-			'alert_type'    => DownloadGedcomWithURL::ALERT_DANGER,
+			'alert_type'    => MetaSearch::ALERT_DANGER,
 			'module_name'	=> $this->title(),
 			'text'  	   	=> $text,
 		]);	 
@@ -467,7 +468,7 @@ class MetaSearch extends AbstractModule implements
 	   return $this->viewResponse($this->name() . '::alert', [
 		   'title'        	=> 'Success',
 		   'tree'			=> null,
-		   'alert_type'     => DownloadGedcomWithURL::ALERT_SUCCESS,
+		   'alert_type'     => MetaSearch::ALERT_SUCCESS,
 		   'module_name'	=> $this->title(),
 		   'text'  	   	    => $text,
 	   ]);	 
@@ -483,8 +484,8 @@ class MetaSearch extends AbstractModule implements
 		//Load secret key from preferences
         $secret_key = $this->getPreference(self::PREF_SECRET_KEY, ''); 
    		
-		$key                 = Validator::queryParams($request)->string('key', '');
-		$tree_name           = Validator::queryParams($request)->string('tree', $this->getPreference(self::PREF_DEFAULT_TREE_NAME, ''));
+		$key       = Validator::queryParams($request)->string('key', '');
+		$tree_name = Validator::queryParams($request)->string('tree', $this->getPreference(self::PREF_DEFAULT_TREE_NAME, ''));
 
 		//Check update of module version
         $this->checkModuleVersionUpdate();
@@ -494,9 +495,9 @@ class MetaSearch extends AbstractModule implements
 			$response = $this->showErrorMessage(I18N::translate('Tree not found') . ': ' . $tree_name);
 		}
         //Error if privacy level is not valid
-		elseif (!in_array($privacy, ['none', 'gedadmin', 'user', 'visitor'])) {
-			$response = $this->showErrorMessage(I18N::translate('Privacy level not accepted') . ': ' . $privacy);
-        } 	
+		//elseif (!in_array($privacy, ['none', 'gedadmin', 'user', 'visitor'])) {
+		//	$response = $this->showErrorMessage(I18N::translate('Privacy level not accepted') . ': ' . $privacy);
+        //} 	
 
 		//If no errors, start the core activities of the module
 		else {
@@ -505,55 +506,35 @@ class MetaSearch extends AbstractModule implements
 		return $response;		
     }
 	
-		 /**
+	/**
+	 * lastname
+	 * placeName
+	 * placeId - GOV-Kennung des Ortes
+	 * since - (optional) liefere nur Einträge, die jünger als das angegebene Datum sind. Datum in der Form yyyy-mm-dd
+	 * searchResult - Trefferliste
+	 *
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
      */	
     public function render(): ResponseInterface
 	{
-		# Eine Hilfsfunktion, die den Inhalt der Parameter aus der HTTP-Anfrage ausliest.
-	/*
-		function get_http_var($name, $default=''){
-		  global $_GET, $_POST;
-		  if (array_key_exists($name, $_GET)){return trim($_GET[$name]);}
-		  if (array_key_exists($name, $_POST)){return trim($_POST[$name]);}
-		  return $default;
-		}
-	*/
-	
-		$lastname  = 'Nachname';     	//get_http_var('lastname');
-		$placename = 'Ort';     		//get_http_var('placename');
-		$govId     = 'GOVtest1234'; 	//get_http_var('placeid');
-
-		header('Content-type: text/xml');
-		echo "<result>";
-		echo "<database>";
-		echo "<name>Beispiel</name>";
-		echo "<url>http://example.org</url>";
-
-		# An dieser Stelle die Suche durchfüren und über die Ergebnisse iterieren
-		$numberResults == 0;
-		for( $i = 0; $i < $numberResults; $i++ ) {
-
-		  echo "<entry>";
-		  echo "<lastname>...</lastname>";
-		  echo "<firstname>...</firstname>";  # Wenn die Datenbank keinen Nachnamen enthält, kann dieses Element weggelassen werden
-		  echo "<details>...</details>";      # Die Details können beliebige Informationen enthalten, z.B. Geburts- und Sterbedatum
-		  echo "<url>http://example.org/anzeige?id=...</url>"; # ein direkter Link auf den Datensatz
-		  echo "</entry>";
-
-		} # für die Ergebnisse
-
-		# Wenn es noch mehr Ergebnisse als die zurückgelieferten gibt, wird ein Element "more" eingefügt.
-		if( $numberResults > 20 ) {
-		   echo "<more>true</more>";
-		}
-
-		echo "</database>";
-		echo "</result>";
+		// diese Such-Parameter aus der aufrufenden URL holen und hier als Parameter übergeben
+		$lastname  = 'Nachname';
+		$placename = 'Ort';
+		$placeId   = 'GOVtest1234';
+		$since 	   = '2023-11-01';
 		
-		$response = true;
-		return $response;		
+		// tbd: Content-Type muss auf 'text/xml' gesetzt werden
+		// statt den Suchparametern hier die Trefferliste übergeben
+		return $this->viewResponse($this->name() . '::json', [
+            'title'        	=> 'JSON',
+			'tree'			=> null,
+			'module_name'	=> $this->title(),
+			'lastname'      => $lastname,
+			'placename'		=> $placename,
+			'placeId'  	   	=> $placeId,
+			'since'			=> $since,
+		]);		
     }
 }
