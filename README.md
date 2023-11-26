@@ -1,7 +1,7 @@
 [![Latest Release](https://img.shields.io/github/v/release/Hartenthaler/hh_metasearch?display_name=tag)](https://github.com/Hartenthaler/hh_metasearch/releases/latest)
 [![webtrees major version](https://img.shields.io/badge/webtrees-v2.1.x-green)](https://webtrees.net/download)
 
-## hh_metasearch
+# hh_metasearch
 A [webtrees](https://webtrees.net) 2.1 custom module to support the "Metasuche" at https://meta.genealogy.net/.
 
 **This is an alpha version. Do not install in productive webtrees systems!**
@@ -10,7 +10,7 @@ A [webtrees](https://webtrees.net) 2.1 custom module to support the "Metasuche" 
 + allow CompGen "[Metasuche]()" to search for data in one or more webtrees trees
 + only data which is publicly available will be found
 
-## IMPORTANT SECURITY NOTES
+## Security note
 An access key can be stored in the module preferences in webtrees. If such a key is defined access is only allowed if the provided key is used in the URL and is identical to the authorization key in the webtrees database (settings). 
 
 **It is highly recommended to use the HTTPS protocol** (i.e. URLs with https://...) to encrypt the URL parameters, especially the authorization key.
