@@ -7,8 +7,9 @@ A [webtrees](https://webtrees.net) 2.1 custom module to support the "Metasuche" 
 **This is an alpha version. Do not install in productive webtrees systems!**
 
 ## What are the benefits of this module?
-+ allow CompGen "[Metasuche]()" to search for data in one or more webtrees trees
-+ only data which is publicly available will be found
++ Allow CompGen "[Metasuche](https://meta.genealogy.net/)" to search for data in one or more webtrees trees.
++ Only data which is publicly available will be found.
++ The result in JSON format is defined in the CompGen [GenWiki](https://wiki.genealogy.net/Metasuche/neue_Schnittstelle). 
 
 ## Security note
 An access key can be stored in the module preferences in webtrees. If such a key is defined access is only allowed if the provided key is used in the URL and is identical to the authorization key in the webtrees database (settings). 
