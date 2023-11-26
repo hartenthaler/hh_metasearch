@@ -500,8 +500,60 @@ class MetaSearch extends AbstractModule implements
 
 		//If no errors, start the core activities of the module
 		else {
-
+			$response = $this->render();
 		}
+		return $response;		
+    }
+	
+		 /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */	
+    public function render(): ResponseInterface
+	{
+		# Eine Hilfsfunktion, die den Inhalt der Parameter aus der HTTP-Anfrage ausliest.
+	/*
+		function get_http_var($name, $default=''){
+		  global $_GET, $_POST;
+		  if (array_key_exists($name, $_GET)){return trim($_GET[$name]);}
+		  if (array_key_exists($name, $_POST)){return trim($_POST[$name]);}
+		  return $default;
+		}
+	*/
+	
+		$lastname  = 'Nachname';     	//get_http_var('lastname');
+		$placename = 'Ort';     		//get_http_var('placename');
+		$govId     = 'GOVtest1234'; 	//get_http_var('placeid');
+
+		header('Content-type: text/xml');
+		echo "<result>";
+		echo "<database>";
+		echo "<name>Beispiel</name>";
+		echo "<url>http://example.org</url>";
+
+		# An dieser Stelle die Suche durchfüren und über die Ergebnisse iterieren
+		$numberResults == 0;
+		for( $i = 0; $i < $numberResults; $i++ ) {
+
+		  echo "<entry>";
+		  echo "<lastname>...</lastname>";
+		  echo "<firstname>...</firstname>";  # Wenn die Datenbank keinen Nachnamen enthält, kann dieses Element weggelassen werden
+		  echo "<details>...</details>";      # Die Details können beliebige Informationen enthalten, z.B. Geburts- und Sterbedatum
+		  echo "<url>http://example.org/anzeige?id=...</url>"; # ein direkter Link auf den Datensatz
+		  echo "</entry>";
+
+		} # für die Ergebnisse
+
+		# Wenn es noch mehr Ergebnisse als die zurückgelieferten gibt, wird ein Element "more" eingefügt.
+		if( $numberResults > 20 ) {
+		   echo "<more>true</more>";
+		}
+
+		echo "</database>";
+		echo "</result>";
+		
+		$response = true;
 		return $response;		
     }
 }
