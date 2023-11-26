@@ -43,12 +43,12 @@ It is not mandatory to provide parameters.
 ### Example URLs  
 https://xyz/webtrees/index.php?route=/webtrees/MetaSearch&key=hYHBiZM9&lastname=Hartenthaler
 
-https://xyz/index.php?route=MetaSearch&trees=tree1&lastname=Baumgärtner&gov=
+https://xyz/index.php?route=MetaSearch&trees=tree1,tree2&lastname=Baumgärtner&gov=
 
 ***Wie sieht die URL bei Pretty-URL aus?***
 
 ### Values for URL Parameters
-* TREE_LIST specifies the list of webtrees tree names that are used to search
+* TREE_LIST specifies the list of webtrees tree names that are used to search (using the tree name, not the tree title).
   * The default list of trees is specified by an administrator in the control panel of this module. This list is used if there is no TREE_LIST specified in the URL. If there is a TREE_LIST parameter, the predefined list is ignored.
 
 * KEY specifies an authorization key, which restricts the access to search
@@ -58,13 +58,18 @@ https://xyz/index.php?route=MetaSearch&trees=tree1&lastname=Baumgärtner&gov=
   * **The control panel also provides an option for the authorization key to be saved as an encrypted hash value**. This option is more secure because the authorization key is not visible to anyone and is also encrypted in the database. However, the authorization key is not readable any more (even for administrators) and cannot be recovered if it is forgotten.
 
 * NAME
+  * Die hier angegebene Zeichenkette wird in den Nachnamen (GEDCOM-Kennzeichen SURN) in den Personendatensätzen (INDI) der selektierten Bäume gesucht (in allen NAME-Datensätzen einer Person). Adelstitel, wie "Baron", Namenspräfixe wie "von" oder Postfixe wie "jr." sollten nicht für die Suche verwendet werden. Doppelnamen, Umlaute und Sonderzeichen können verwendet werden, etwa bei "Maier-Lüdenscheid" oder "McKnight" oder "da Vinci". Die Klein-/Großschreibung ist irrelevant.
 
 * PLACE
+  * Eine hier angegebene Zeichenkette wird in den PLAC-Daten der Personendatensätze gesucht.
+  * Die Suche erfolgt in der Form, wie diese Daten in der Datenbank angegeben worden sind. Wenn die Orte also in der Form "Ennetach, Mengen, Sigmaringen, Baden-Württenberg, DEU" in der Datenbank spezifiziert sind, dann wird eine Suche nach "Deutschland" keine Treffer liefern, eine Suche nach "Ennetach, Mengen" oder nach "DEU" aber sehr wohl. Wenn in der Datenbank historische Ortsnamen verwendet worden sind, etwa "Preußisch Eylau, Königsberg", dann wird eine Suche nach dem heutigen Namen "Bagrationowsk" keinen Treffer liefern; wenn umgekehrt der Name in der Datenbank mit "Bagrationowsk, Bagrationovskij rajon, Kaliningradskaja oblast, RUS" angegeben ist, wird eine Suche nach "Eylau" erfolglos bleiben.
 
 * GOV
+  * Der Parameter mit der GOV-ID kommt nur zum Tragen, wenn in der Metasuche ein Alert gesetzt wird; in der normalen Metasuche kann dieser Parameter nicht angegeben werden.
+  * Dieses Modul geht davon aus, dass einem Ort (GEDCOM-Kennzeichen PLAC) ein gemeinsamer Ort zugewiesen wird (GEDCOM-Kennzeichen _LOC) und diesem gemeinsamen Ort eine GOV-ID (GEDCOM-Kennzeichen _GOV) zugeordnet ist. Eine direkte Zuordnung von _GOV zu einem PLAC wird nicht unterstützt.
 
 * YYYY-MM-DD
-  * Wenn der Parameter "since" in der Form yyyy-mm-dd angegeben ist, dann werden nur Ergebnisse zurück geliefert, deren letztes Änderungsdatum (CHAN) definiert und neuer ist.
+  * Wenn der Parameter "since" in der Form yyyy-mm-dd angegeben ist, dann werden nur Ergebnisse zurück geliefert, deren letztes Änderungsdatum (CHAN) im Personendatensatz (INDI) definiert und neuer ist (bei gleichem Datumswert erfolgt keine Treffermeldung).
 
 Parameter sind optional; wenn lastname und placename und placeId fehlen (also alle drei Parameter), wird ein leeres Ergebnis für jeden tree zurückgegeben. Diese drei Parmeter sind mit "und" verknüpft.
 
