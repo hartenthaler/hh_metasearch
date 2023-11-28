@@ -41,8 +41,6 @@ use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomTrait;
 use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Session;
-use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\Validator;
 use Fisharebest\Webtrees\View;
@@ -51,9 +49,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
-use League\Flysystem\FilesystemException;
-use League\Flysystem\UnableToWriteFile;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -77,46 +72,46 @@ class MetaSearch extends AbstractModule implements
      */
 
     // Module title 
-    public const CUSTOM_TITLE       = 'MetaSearch';
+    public const CUSTOM_TITLE           = 'MetaSearch';
 
     // Module file name
-    public const CUSTOM_MODULE      = 'hh_metasearch';
+    public const CUSTOM_MODULE          = 'hh_metasearch';
 
     // Module description
-    public const CUSTOM_DESCRIPTION = 'A custom module to support "Metasuche" of CompGen.';
+    public const CUSTOM_DESCRIPTION     = 'A custom module to support "Metasuche" of CompGen.';
 
 	// Author of custom module
-	public const CUSTOM_AUTHOR 		= 'Hermann Hartenthaler';
+	public const CUSTOM_AUTHOR 		    = 'Hermann Hartenthaler';
 	
 	// GitHub repository
-	public const GITHUB_REPO 		= 'hartenthaler/' . self::CUSTOM_MODULE;
+	public const GITHUB_REPO 		    = 'hartenthaler/' . self::CUSTOM_MODULE;
 
     // Custom module website
-    public const CUSTOM_WEBSITE     = 'https://github.com/' . self::GITHUB_REPO . '/';
+    public const CUSTOM_WEBSITE         = 'https://github.com/' . self::GITHUB_REPO . '/';
 	
-	//Custom module version
-	public const CUSTOM_VERSION 	= '2.1.18.0';
+	// Custom module version
+	public const CUSTOM_VERSION 	    = '2.1.18.0';
 
 	// GitHub API URL to get the information about the latest releases
 	public const GITHUB_API_LATEST_VERSION  = 'https://api.github.com/repos/'. self::GITHUB_REPO . '/releases/latest';
 	public const GITHUB_API_TAG_NAME_PREFIX = '"tag_name":"v';
 	
 	// Route
-	protected const ROUTE_URL 		= '/' . self::CUSTOM_TITLE; 
+	protected const ROUTE_URL 		    = '/' . self::CUSTOM_TITLE;
 
-    // Prefences, Settings
+    // Preferences, Settings
 	public const PREF_MODULE_VERSION 	= 'module_version'; //tbd wozu?
 	public const PREF_SECRET_KEY 		= 'secret_key';
 	public const PREF_USE_HASH 			= 'use_hash';
 	public const PREF_MAX_HIT_DEFAULT	= 20;
 	public const PREF_MAX_HIT			= 'max_hit';
-	public const PREF_DATABASE_NAME		= 'Ahnendatenbank Hartenthaler';
-	public const PREF_DATABASE_URL		= 'https://ahnen.hartenthaler.eu';
+	public const PREF_DATABASE_NAME		= 'database_name';                      // eg 'Ahnendatenbank Hartenthaler'
+	public const PREF_DATABASE_URL		= 'database_url';                       // eg 'https://ahnen.hartenthaler.eu'
 
 
 	// Alert tpyes
-	public const ALERT_DANGER = 'alert_danger';
-	public const ALERT_SUCCESS = 'alert_success';
+	public const ALERT_DANGER           = 'alert_danger';
+	public const ALERT_SUCCESS          = 'alert_success';
 
    /**
      * constructor
@@ -236,7 +231,8 @@ class MetaSearch extends AbstractModule implements
 
                     if ($response->getStatusCode() === StatusCodeInterface::STATUS_OK) {
                         $content = $response->getBody()->getContents();
-                        preg_match_all('/' . self::GITHUB_API_TAG_NAME_PREFIX . '\d+\.\d+\.\d+/', $content, $matches, PREG_OFFSET_CAPTURE);
+                        preg_match_all('/' . self::GITHUB_API_TAG_NAME_PREFIX .
+                                                '\d+\.\d+\.\d+/', $content, $matches, PREG_OFFSET_CAPTURE);
 
 						if(!empty($matches[0]))
 						{
@@ -251,7 +247,7 @@ class MetaSearch extends AbstractModule implements
                         return $version;
                     }
                 } catch (GuzzleException $ex) {
-                    // Can't connect to the server?
+                    // can't connect to the server?
                 }
 
                 return $this->customModuleVersion();
@@ -310,19 +306,24 @@ class MetaSearch extends AbstractModule implements
         $all_trees = $this->all();
 
         foreach($all_trees as $tree) {
-            $tree_list[$tree->name()] = $tree->name() . ' (' . $tree->title() . ')';
+            $treeObj = (object)[];
+            $treeObj->title = $tree->title();
+            $treeObj->enabled = $this->getPreference('status-' . $tree->name(), 'on');
+            $tree_list[$tree->name()] = $treeObj;
         }
 		//tbd nur öffentlich sichtbare rausfiltern
 
         return $this->viewResponse(
             $this->name() . '::settings',
             [
-                'title'             	=> $this->title(),
-				'description'  			=> $this->description(),
-                'tree_list'             => $tree_list,
-				self::PREF_MAX_HIT		=> $this->getPreference(self::PREF_MAX_HIT, strval(self::PREF_MAX_HIT_DEFAULT)),
-				self::PREF_SECRET_KEY   => $this->getPreference(self::PREF_SECRET_KEY, ''),
-				self::PREF_USE_HASH     => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
+                'title'             	    => $this->title(),
+				'description'  			    => $this->description(),
+                self::PREF_DATABASE_NAME    => $this->getPreference(self::PREF_DATABASE_NAME, ''),      // tbd is there a better default value available?
+                self::PREF_DATABASE_URL     => $this->getPreference(self::PREF_DATABASE_URL, ''),       // tbd is there a better default value available?
+                self::PREF_SECRET_KEY       => $this->getPreference(self::PREF_SECRET_KEY, ''),
+                self::PREF_USE_HASH         => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
+                self::PREF_MAX_HIT		    => $this->getPreference(self::PREF_MAX_HIT, strval(self::PREF_MAX_HIT_DEFAULT)),
+                'tree_list'                 => $tree_list,
             ]
         );
     }
@@ -337,6 +338,8 @@ class MetaSearch extends AbstractModule implements
     public function postAdminAction(ServerRequestInterface $request): ResponseInterface
     {
         $save          	= Validator::parsedBody($request)->string('save', '');
+        $database_name  = Validator::parsedBody($request)->string(self::PREF_DATABASE_NAME, '');;
+        $database_url   = Validator::parsedBody($request)->string(self::PREF_DATABASE_URL, '');;
         $use_hash       = Validator::parsedBody($request)->boolean(self::PREF_USE_HASH, false);
         $new_secret_key = Validator::parsedBody($request)->string('new_secret_key', '');
 		$max_hit		= Validator::parsedBody($request)->integer(self::PREF_MAX_HIT, self::PREF_MAX_HIT_DEFAULT);
@@ -386,8 +389,10 @@ class MetaSearch extends AbstractModule implements
             if(!$new_key_error) {
                 $this->setPreference(self::PREF_USE_HASH, $use_hash ? '1' : '0');
             }
-			//tbd prüfen ob max_hit größer 0 ist
-			$this->setPreference('max_hit', ($max_hit > 0) ? strval($max_hit) : strval(self::PREF_MAX_HIT_DEFAULT));
+            $this->setPreference(self::PREF_DATABASE_NAME, trim($database_name));
+            $this->setPreference(self::PREF_DATABASE_URL, trim($database_url));
+            $this->setPreference(self::PREF_MAX_HIT, ($max_hit > 0) ? strval($max_hit) : strval(self::PREF_MAX_HIT_DEFAULT));
+            //$this->postAdminActionTrees($params);
        
             // finally, show a success message
 			$message = I18N::translate('The preferences for the module "%s" were updated.', $this->title());
@@ -396,6 +401,53 @@ class MetaSearch extends AbstractModule implements
 
         return redirect($this->getConfigLink());
     }
+
+    /**
+     * save the user preferences for all parameters related to the trees
+     *
+     * @param array $params configuration parameters
+
+    private function postAdminActionTrees(array $params)
+    {
+        $order = implode(",", $params['order']);
+        $this->setPreference('order', $order);
+        foreach ($this->all() as $tree) {
+            $this->setPreference('status-' . $tree, '0');
+        }
+        foreach ($params as $key => $value) {
+            if (str_starts_with($key, 'status-')) {
+                $this->setPreference($key, $value);
+            }
+        }
+    }
+
+    /**
+     * some trees should be used for search (order and enabled/disabled)
+     * set default values in case the settings are not stored in the database yet
+     *
+     * @return array<string,object> of ordered objects with name and status (enabled/disabled)
+
+    private function getUsedTrees(): array
+    {
+        $listTrees = $this->all();
+        $orderDefault = implode(',', $listFamilyParts);
+        $order = explode(',', $this->getPreference('order', $orderDefault));
+
+        if (count($listFamilyParts) > count($order)) {
+            $this->addFamilyParts($listFamilyParts, $order);
+        }
+
+        $shownParts = [];
+        foreach ($order as $efp) {
+            $efpObj = (object)[];
+            $efpObj->name = ExtendedFamilySupport::translateFamilyPart($efp);
+            $efpObj->generation = ExtendedFamilySupport::formatGeneration($efp);
+            $efpObj->enabled = $this->getPreference('status-' . $efp, 'on');
+            $shownParts[$efp] = $efpObj;
+        }
+        return $shownParts;
+    }
+    */
 
     /**
      * Check if module version is new and start update activities if needed
@@ -452,7 +504,7 @@ class MetaSearch extends AbstractModule implements
         });
     }
      /**
-     * Check if tree is a valid tree
+     * check if tree is a valid tree
      *
      * @return bool
      */ 
@@ -532,12 +584,11 @@ class MetaSearch extends AbstractModule implements
 	
 	/**
 	 * lastname
-	 * placeName
-	 * placeId - GOV-Kennung des Ortes
+	 * placename
+	 * placeid - GOV-Kennung des Ortes
 	 * since - (optional) liefere nur Einträge, die jünger als das angegebene Datum sind. Datum in der Form yyyy-mm-dd
 	 * searchResult - Trefferliste
 	 *
-     * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
      */	

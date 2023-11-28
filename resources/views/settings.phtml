@@ -4,23 +4,20 @@ namespace Hartenthaler\Webtrees\Module\MetaSearch;
 
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
-use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Session;
-use Fisharebest\Webtrees\Site;
 use Fisharebest\Webtrees\View;
 
+/**
+ * @var  string		            $title
+ * @var  string		            $description
+ * @var  string                 $database_name
+ * @var  string                 $database_url
+ * @var  string		            $secret_key
+ * @var  bool		            $use_hash
+ * @var  int                    $max_hit
+ * @var  array<string,object>   $tree_list
+ */
 
 /**
- * @var  string		$title
- * @var  string		$description
- * @var  array      $tree_list
- * @var  int		$max_hit
- * @var  string		$secret_key
- * @var  bool		$use_hash
- */
- 
-/**
- * Soll/kann mit Hash/Key gearbeitet werden?
  * Die zu durchsuchenden Trees müssen einzeln aus/abgewählt werden können; es kommen nur für Gäste sichtbare Trees in Frage.
  */
 
@@ -38,7 +35,7 @@ use Fisharebest\Webtrees\View;
 		<div class="row mb-3"><?= view('icons/spacer') ?></div> 
 		<?php if (!$use_hash) : ?>
 			<div class="alert alert-warning">
-				<p><?= I18N::translate('Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments with limited users. Otherwise, please activate encrpytion of the authorization key.') ?></p>
+				<p><?= I18N::translate('Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments with limited users. Otherwise, please activate encryption of the authorization key.') ?></p>
 			</div>  
 		<?php endif ?>
 
@@ -78,24 +75,90 @@ use Fisharebest\Webtrees\View;
 				<div class="col-sm-9">
 				<?= view('components/checkbox', ['label' => I18N::translate('Activate'), 'name' => MetaSearch::PREF_USE_HASH, 'checked' => $use_hash]) ?>
 					<div class="form-text">
-						<?= I18N::translate('The encryption of the authorization key is more secure, because the authorization key is not visible to anyone and also encrypted in the database. However, the authorization key is not readible any more (e.g. for other administrators) and cannot be recovered if it is forgotten.'); ?>
+						<?= I18N::translate('The encryption of the authorization key is more secure, because the authorization key is not visible to anyone and also encrypted in the database. However, the authorization key is not readable any more (e.g. for other administrators) and cannot be recovered if it is forgotten.'); ?>
 					</div>
 				</div>
 			</div>
-		</fieldset>				
+		</fieldset>
+
+        <h3><?= I18N::translate('Database Identification') ?></h3>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label wt-page-options-label" for="database_name">
+                <?= I18N::translate('Name') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value">
+                <input class="form-control" id="database_name" name="database_name" type="text">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label wt-page-options-label" for="database_url">
+                <?= I18N::translate('URL') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value">
+                <input class="form-control" id="database_url" name="database_url" type="url">
+            </div>
+        </div>
+
+        <h3><?= I18N::translate('Define maximum number of hits per tree') ?></h3>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label wt-page-options-label" for="max_hit">
+                <?= I18N::translate('greater or equal 1') ?>
+            </label>
+            <div class="col-sm-9 wt-page-options-value">
+                <input class="form-control" id="max_hit" name="max_hit" type="number">
+            </div>
+        </div>
 
 		<h3><?= I18N::translate('Select trees to be searched') ?></h3>
+        <?php $uses_sorting = true ?>
+        <table class="table table-bordered wt-table-menu">
+            <thead>
+            <tr>
+                <th><?= I18N::translate('Tree') ?></th>
+                <th class="text-center"><?= I18N::translate('Enabled') ?></th>
+                <?php if ($uses_sorting) : ?>
+                    <th class="text-center"><?= I18N::translate('Move up') ?></th>
+                    <th class="text-center"><?= I18N::translate('Move down') ?></th>
+                <?php endif ?>
+            </tr>
+            </thead>
 
-		<h3><?= I18N::translate('Define maximum number of hits per tree') ?></h3>
-		<div class="row mb-3">
-			<label class="col-sm-3 col-form-label wt-page-options-label" for="max_hit">
-				<?= I18N::translate('Maximum number of hits (greater or equal 1)') ?>
-			</label>
-			<div class="col-sm-9 wt-page-options-value">
-				<input class="form-control" id="max_hit" name="max_hit" type="int">
-			</div>
-		</div>
-		
+            <tbody>
+            <?php foreach ($tree_list as $tree => $value) : ?>
+                <tr>
+                    <th scope="col">
+                        <input type="hidden" name="order[]" value="<?= $tree ?>">
+                            <span title="<?= $value->title ?>">
+                                <?= $value->title ?>
+                            </span>
+                    </th>
+
+                    <td class="text-center">
+                        <label class="d-block">
+                            <input type="checkbox" name="status-<?= $tree ?>" id="status-<?= $tree ?>" <?= ($value->enabled == 'on') ? 'checked' : '' ?>>
+                            <span class="sr-only">
+                                    <?= I18N::translate('Enabled') ?>
+                                </span>
+                        </label>
+                    </td>
+
+                    <?php if ($uses_sorting) : ?>
+                        <td class="move up text-center">
+                            <a href="#" title="<?= I18N::translate('Move up') ?>">
+                                <?= view('icons/arrow-up') ?>
+                            </a>
+                        </td>
+                        <td class="move down text-center">
+                            <a href="#" title="<?= I18N::translate('Move down') ?>">
+                                <?= view('icons/arrow-down') ?>
+                            </a>
+                        </td>
+                    <?php endif ?>
+                </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+
 		<div class="col">
 			<p></p>
 			<button type="submit" class="btn btn-primary">
@@ -116,4 +179,31 @@ use Fisharebest\Webtrees\View;
         }
     });
 </script>
+<?php View::endpush() ?>
+
+<?php View::push('javascript') ?>
+<script>
+    $('.wt-table-menu td.move').click(function () {
+        var row = $(this).closest('tr');
+
+        if ($(this).hasClass('up')) {
+            row.prev().before(row);
+        } else {
+            row.next().after(row);
+        }
+
+        return false;
+    });
+</script>
+<?php View::endpush() ?>
+
+<?php View::push('styles') ?>
+<style>
+    .wt-table-menu tr:first-child .wt-icon-arrow-up {
+        display:none;
+    }
+    .wt-table-menu tr:last-child .wt-icon-arrow-down {
+        display:none;
+    }
+</style>
 <?php View::endpush() ?>

@@ -31,13 +31,7 @@ declare(strict_types=1);
 namespace Hartenthaler\Webtrees\Module\MetaSearch;
 
 use Fisharebest\Webtrees\Auth;
-use Fisharebest\Webtrees\Registry;
-use Fisharebest\Webtrees\Tree;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * MetaSearchService
