@@ -7,18 +7,18 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
 
 /**
- * @var  string		            $title
- * @var  string		            $description
- * @var  string                 $database_name
- * @var  string                 $database_url
- * @var  string		            $secret_key
- * @var  bool		            $use_hash
- * @var  int                    $max_hit
- * @var  array<string,object>   $tree_list
+ * @var  string		            $title          name of this module
+ * @var  string		            $description    short description of this module
+ * @var  string                 $database_name  name of this webtrees database
+ * @var  string                 $database_url   URL of this webtrees database
+ * @var  string		            $secret_key     secret key that allows access to this webtrees service
+ * @var  bool		            $use_hash       encrypt the secret key
+ * @var  int                    $max_hit        maximum number of search hits per webtrees tree
+ * @var  array<string,object>   $tree_list      ordered list of trees that should be included in the search; index is the tree name
  */
 
 /**
- * Die zu durchsuchenden Trees müssen einzeln aus/abgewählt werden können; es kommen nur für Gäste sichtbare Trees in Frage.
+ * tbd Möglichkeit zum Löschen des secret key schaffen
  */
 
 ?>
@@ -35,7 +35,7 @@ use Fisharebest\Webtrees\View;
 		<div class="row mb-3"><?= view('icons/spacer') ?></div> 
 		<?php if (!$use_hash) : ?>
 			<div class="alert alert-warning">
-				<p><?= I18N::translate('Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments with limited users. Otherwise, please activate encryption of the authorization key.') ?></p>
+				<p><?= I18N::translate('Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments. Otherwise, please activate encryption of the authorization key.') ?></p>
 			</div>  
 		<?php endif ?>
 

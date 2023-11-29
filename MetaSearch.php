@@ -55,6 +55,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use function substr;
+use function password_verify;
+use function explode;
 
 /**
  * Class MetaSearch
@@ -474,7 +476,7 @@ class MetaSearch extends AbstractModule implements
     }
 
     /**
-     * All the trees that the current user has permission to access.
+     * collect all the trees that have permission to access
      *
      * @return Collection<array-key,Tree>
      */
@@ -503,13 +505,15 @@ class MetaSearch extends AbstractModule implements
                 });
         });
     }
-     /**
-     * check if tree is a valid tree
+
+    /**
+     * check if tree is a valid public tree
+     * @param string $tree_name
      *
      * @return bool
      */ 
-     private function isValidTree(string $tree_name): bool
-	 {
+    private function isValidTree(string $tree_name): bool
+	{
 		$find_tree = $this->all()->first(static function (Tree $tree) use ($tree_name): bool {
             return $tree->name() === $tree_name;
         });
@@ -517,19 +521,55 @@ class MetaSearch extends AbstractModule implements
 		$is_valid_tree = $find_tree instanceof Tree;
 		
 		if ($is_valid_tree) {
-            $this->download_tree = $find_tree;
+            // tbd check if this is a public tree
+            $is_valid_tree = true;
         }
 		
 		return $is_valid_tree;
-	 }
-	 
-	 /**
-     * Show error message in the front end
+	}
+
+    /**
+     * get list of trees to be searched from preferences
+     *
+     * @return array
+     */
+    private function getSearchTrees(): array
+    {
+        $tree_list = [];
+        $tree_list[] = 'kennedy';   // tbd
+        return $tree_list;
+    }
+
+    /**
+     * check if date parameter is well formatted and is a valid date in the gregorian calendar
+     * return julian date
+     *
+     * @param string $date has format like "YYYY-MM-DD"
+     *
+     * @return int
+     */
+    private function wellFormatedDate(string $date): int
+    {
+        $jd = 0;
+        if (false) {            // tbd check format YYYY-MM-DD (4 digits - 2 digits - 2 digits)
+                                // 1582 <= YYYY <= actual year
+                                // 0 < MM <= 12
+                                // 0 < DD <= 31
+                                // can be converted to jd and is less or equal actual date
+            $jd = 1;
+        }
+        return $jd;
+    }
+
+    /**
+     * show error message in the front end
+     *
+     * @param string $text
      *
      * @return ResponseInterface
-     */ 
-     private function showErrorMessage(string $text): ResponseInterface
-	 {		
+     */
+    private function showErrorMessage(string $text): ResponseInterface
+	{
 		return $this->viewResponse($this->name() . '::alert', [
             'title'        	=> 'Error',
 			'tree'			=> null,
@@ -537,13 +577,15 @@ class MetaSearch extends AbstractModule implements
 			'module_name'	=> $this->title(),
 			'text'  	   	=> $text,
 		]);	 
-	 }
+	}
  
-	 /**
-     * Show success message in the front end
+	/**
+     * show success message in the front end
+     *
+     * @param string $text
      *
      * @return ResponseInterface
-     */ 
+     */
 	private function showSuccessMessage(string $text): ResponseInterface
 	{		
 	   return $this->viewResponse($this->name() . '::alert', [
@@ -555,61 +597,112 @@ class MetaSearch extends AbstractModule implements
 	   ]);	 
 	}
 
-	 /**
+    /**
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
-     */	
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-		//Load secret key from preferences
-        $secret_key = $this->getPreference(self::PREF_SECRET_KEY, ''); 
-   		$key        = Validator::queryParams($request)->string('key', '');
-		
-		//Check update of module version
+        // check update of module version
         $this->checkModuleVersionUpdate();
-		
-		$tree_name = "kennedy";
-        //Error if tree name is not valid
-        if (!$this->isValidTree($tree_name)) {
-			$response = $this->showErrorMessage(I18N::translate('Tree not found') . ': ' . $tree_name);
-		}
 
-		//If no errors, start the core activities of the module
-		else {
-			$response = $this->render();
-		}
-		return $response;		
+        // fetch URL parameters
+        $key        = Validator::queryParams($request)->string('key', '');
+        $trees      = trim(Validator::queryParams($request)->string('trees', ''));
+        $lastname   = trim(Validator::queryParams($request)->string('lastname', ''));
+        $placename  = trim(Validator::queryParams($request)->string('placename',''));
+        $placeid    = trim(Validator::queryParams($request)->string('placeid',  ''));
+        $since      = trim(Validator::queryParams($request)->string('since',  ''));
+
+        // debug
+        //$response = $this->showSuccessMessage(I18N::translate('key="%s" trees="%s" lastname="%s" placename="%s" placeid="%s" since="%s"',$key,$trees,$lastname,$placename,$placeid,$since));
+
+        // check key
+
+        $error = false;
+        // load secret key from preferences
+        $secret_key = $this->getPreference(self::PREF_SECRET_KEY, '');
+        if ($secret_key <> '') {
+            // error if key is empty and key is defined in database
+            if ($key === '') {
+                $error = true;
+                $response = $this->showErrorMessage(I18N::translate('No key provided. For checking of the access rights, it is mandatory to provide a key as parameter in the URL.'));
+            } // error if no hashing and key is not valid
+            elseif (!boolval($this->getPreference(self::PREF_USE_HASH, '0')) && ($key !== $secret_key)) {
+                $error = true;
+                $response = $this->showErrorMessage(I18N::translate('Key not accepted. Access denied.'));
+            } // error if hashing and key does not fit to hash
+            elseif (boolval($this->getPreference(self::PREF_USE_HASH, '0')) && (!password_verify($key, $secret_key))) {
+                $error = true;
+                $response = $this->showErrorMessage(I18N::translate('Key (encrypted) not accepted. Access denied.'));
+            }
+        }
+
+        if (!$error) {
+            // check tree list
+            if ($trees === '') {
+                $tree_list = $this->getSearchTrees();
+            } else {
+                $tree_list = [];
+                $tree_parameters = explode(',', $trees);
+                foreach ($tree_parameters as $tree) {
+                    $tree = trim($tree);
+                    if ($this->isValidTree($tree)) {
+                        $tree_list[] = $tree;
+                    } else {
+                        $response = $this->showErrorMessage(I18N::translate('Tree %s is not a valid public tree name.', $tree));
+                    }
+                }
+            }
+
+            if ((count($tree_list) == 0) or ($lastname = '' and $placename = '' and $placeid = '')) {
+                $empty = true;
+                $response = $this->render($empty, $tree_list, $lastname, $placename, $placeid, 0);
+            } else {
+                $empty = false;
+                $response = $this->render($empty, $tree_list, $lastname, $placename, $placeid, $this->wellFormatedDate($since));
+            }
+        }
+        return $response;
     }
-	
-	/**
-	 * lastname
-	 * placename
-	 * placeid - GOV-Kennung des Ortes
-	 * since - (optional) liefere nur Einträge, die jünger als das angegebene Datum sind. Datum in der Form yyyy-mm-dd
-	 * searchResult - Trefferliste
-	 *
+
+    /**
+     * search and generate JSON
+     *
+     * @param bool $empty generate empty JSON structure
+     * @param array $tree_list list of tree names to be searched
+     * @param string $lastname last name of an individual to be searched (SURN in all INDI:NAME record)
+     * @param string $placename piece of place name (ie PLAC) to be searched in all events related to an INDI, like INDI:BIRT, INDI:DEAT, ...
+     * @param string $placeid GOV-Id to be searched in all _LOC records (ie _LOC:_GOV) in all shared location records related to an PLAC
+     * @param int $since_jd check if julian date of CHAN is greater than this value
      *
      * @return ResponseInterface
-     */	
-    public function render(): ResponseInterface
+     */
+    public function render(bool $empty, array $tree_list, string $lastname, string $placename, string $placeid, int $since_jd): ResponseInterface
 	{
-		// diese Such-Parameter aus der aufrufenden URL holen und hier als Parameter übergeben
-		$lastname  = 'Nachname';
-		$placename = 'Ort';
-		$placeId   = 'GOVtest1234';
-		$since 	   = '2023-11-01';
-		
-		// tbd: Content-Type muss auf 'text/xml' gesetzt werden
-		// statt den Suchparametern hier die Trefferliste übergeben
+		// tbd Content-Type muss auf 'text/xml' gesetzt werden
+		// tbd statt den Testwerten hier die Trefferliste nach der Suche übergeben
+        $hits = [];                         // array of objects per tree; first index is tree name
+        $hits_tree = (object)[];            // object containing hits in one tree
+        $entries = [];                      // array of hits in one tree
+        $entry = (object)[];                // hit
+        $entry->lastname = 'Hartenthaler';
+        $entry->firstname = 'Hermann';
+        $entry->details = '* 1957 Ennetach';
+        $entry->url = 'I318';
+        $entries[] = $entry;
+        $hits_tree->entries = $entries;
+        $hits_tree->more = false;
+        $hits['kennedy'] = $hits_tree;
+
 		return $this->viewResponse($this->name() . '::json', [
-            'title'        	=> 'JSON',
-			'tree'			=> null,
-			'module_name'	=> $this->title(),
-			'lastname'      => $lastname,
-			'placename'		=> $placename,
-			'placeId'  	   	=> $placeId,
-			'since'			=> $since,
+            'tree'			=> null,
+            'title'         => '',
+            'database_name' => $this->getPreference(self::PREF_DATABASE_NAME, ''),
+            'database_url'  => $this->getPreference(self::PREF_DATABASE_URL, ''),
+            'empty'         => $empty,
+            'hits'          => $hits,
 		]);		
     }
 }

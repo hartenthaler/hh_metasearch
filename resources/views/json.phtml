@@ -5,79 +5,36 @@ namespace Hartenthaler\Webtrees\Module\MetaSearch;
 use Fisharebest\Webtrees\I18N;
 
 /**
- * @var string       $title
- * @var string       $tree
- * @var string       $module_name
- * @var string       $lastname
- * @var string       $placename,
- * @var string       $placeId,
- * @var string       $since,
+ * @var string      $database_name
+ * @var string      $database_url
+ * @var bool        $empty
+ * @var array       $hits
  */
-
-/** 
-	 <result>
-	  <database>
-		<name>GEDBAS</name>
-		<url>http://gedbas.genealogy.net</url>
-		<entry>
-		  <lastname>lastname 0</lastname>
-		  <firstname>firstname 0</firstname>
-		  <details>details 0</details>
-		  <url>http://localhost/data/0</url>
-		</entry>
-		<entry>
-		  <lastname>lastname 1</lastname>
-		  <firstname>firstname 1</firstname>
-		  <details>details 1</details>
-		  <url>http://localhost/data/1</url>
-		</entry>
-		...
-		<more>true</more>  <!-- wenn das "more"-Element enthalten ist, zeigt das an, dass es noch mehr Treffer als die zurückgelieferten gibt -->
-	  </database>
-	  </database>
-		  ...
-	  </database>
-	</result>
- */
-
-/*
-		header('Content-type: text/xml');
-		echo "<result>";
-		echo "<database>";
-		echo "<name>$tree</name>";
-		echo "<url>http://example.org</url>";
-
-		# über die Ergebnisse iterieren
-		$numberResults == 0;
-		for( $i = 0; $i < $numberResults; $i++ ) {
-
-		  echo "<entry>";
-		  echo "<lastname>...</lastname>";
-		  echo "<firstname>...</firstname>";  # Wenn die Datenbank keinen Nachnamen enthält, kann dieses Element weggelassen werden
-		  echo "<details>...</details>";      # Die Details können beliebige Informationen enthalten, z.B. Geburts- und Sterbedatum
-		  echo "<url>http://example.org/anzeige?id=...</url>"; # ein direkter Link auf den Datensatz
-		  echo "</entry>";
-
-		} # für die Ergebnisse
-
-		# Wenn es noch mehr Ergebnisse als die zurückgelieferten gibt, wird ein Element "more" eingefügt.
-		if( $numberResults > 20 ) {
-		   echo "<more>true</more>";
-		}
-
-		echo "</database>";
-		echo "</result>";
-*/
 
 ?>
-	<div class="json">
-		<b><?= I18N::translate('Custom module') . ': ' . e($module_name) ?></b>
-		<br>
-		<?= e($lastname) ?>
-		<br>
-		<?= e($placename) ?>
-		<br>
-		<?= e($placeId) ?>
-		<br>
-		<?= e($since) ?>
-	</div>
+<?= e("<result>") ?>
+    <?php if ($empty): ?>
+        <?= e("<database>") ?>
+            <?= e("<name>" . $database_name . "</name>") ?>
+            <?= e("<url>" . $database_url . "</url>") ?>
+        <?= e("</database>") ?>
+    <?php else: ?>
+        <?php foreach ($hits as $tree_name => $entries) : ?>
+            <?= e("<database>") ?>
+                <?= e("<name>" . $database_name . ' - ' . $tree_name . "</name>") ?>
+                <?= e("<url>" . $database_url . '/tree=' . $tree_name . "</url>") ?>
+                <?php foreach ($entries->entries as $entry) : ?>
+                    <?= e("<entry>") ?>
+                        <?= e("<lastname>" . $entry->lastname . "</lastname>") ?>
+                        <?= e("<firstname>" . $entry->firstname . "</firstname>") ?>
+                        <?= e("<details>" . $entry->details . "</details>") ?>
+                        <?= e("<url>" . $entry->url . "</url>") ?>
+                    <?= e("</entry>") ?>
+                <?php endforeach ?>
+                <?php if ($entries->more): ?>
+                    <?= e("<more>true</more>") ?>
+                <?php endif ?>
+            <?= e("</database>") ?>
+        <?php endforeach ?>
+    <?php endif ?>
+<?= e("</result>") ?>
