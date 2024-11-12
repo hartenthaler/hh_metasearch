@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hh metasearch\n"
-"POT-Creation-Date: 2024-11-12 11:06+0100\n"
-"PO-Revision-Date: 2024-11-12 11:30+0100\n"
+"POT-Creation-Date: 2024-11-12 11:41+0100\n"
+"PO-Revision-Date: 2024-11-12 11:43+0100\n"
 "Last-Translator: Holger Eisold <github@eisold.family>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -17,37 +17,47 @@ msgstr ""
 "X-Poedit-Flags-xgettext: --add-comments=I18N:\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: MetaSearch.php:370
+#. I18N: Name of a module.
+#: MetaSearch.php:155
+msgid "MetaSearch"
+msgstr "Metasuche"
+
+#. I18N: Description of this module
+#: MetaSearch.php:167
+msgid "A custom module to support \"Metasuche\" of CompGen."
+msgstr "Ein benutzerdefiniertes Modul um die \"Metasuche\" von CompGen zu unterstützen."
+
+#: MetaSearch.php:367
 msgid "The provided secret key is too short. Please provide a minimum length of 8 characters."
 msgstr "Der angegebene Autorisierungs-Schlüssel ist zu kurz. Bitte geben Sie mindestens eine Länge von 8 Zeichen ein."
 
-#: MetaSearch.php:376
+#: MetaSearch.php:373
 msgid "The provided secret key contains characters, which are not accepted. Please provide a different key."
 msgstr "Der eingegebene Autorisierungs-Schlüssel enthält Schriftzeichen, welche nicht akzeptiert werden. Bitte geben Sie einen anderen Autorisierungs-Schlüssel ein."
 
-#: MetaSearch.php:400
+#: MetaSearch.php:397
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: MetaSearch.php:468
+#: MetaSearch.php:465
 #, php-format
 msgid "The preferences for the custom module \"%s\" were sucessfully updated to the new module version %s."
 msgstr "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die neue Modul-Version %s aktualisiert."
 
-#: MetaSearch.php:630
+#: MetaSearch.php:627
 msgid "No key provided. For checking of the access rights, it is mandatory to provide a key as parameter in the URL."
 msgstr "Kein Autorisierungs-Schlüssel übergeben. Zum Überprüfen der Zugriffsrechte, ist die Angabe eines Autorisierungs-Schlüssels als URL-Parameter erforderlich."
 
-#: MetaSearch.php:634
+#: MetaSearch.php:631
 msgid "Key not accepted. Access denied."
 msgstr "Autorisierungs-Schlüssel nicht akzeptiert. Zugriff verweigert."
 
-#: MetaSearch.php:638
+#: MetaSearch.php:635
 msgid "Key (encrypted) not accepted. Access denied."
 msgstr "Autorisierungs-Schlüssel (verschlüsselt) nicht akzeptiert. Zugriff verweigert."
 
-#: MetaSearch.php:654
+#: MetaSearch.php:651
 #, php-format
 msgid "Tree %s is not a valid public tree name."
 msgstr "Stammbaum \"%s\" ist kein gültiger öffentlicher Name."

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hh metasearch\n"
-"POT-Creation-Date: 2024-11-12 11:28+0100\n"
+"POT-Creation-Date: 2024-11-12 11:41+0100\n"
 "PO-Revision-Date: 2024-11-12 10:06+0100\n"
 "Last-Translator: Holger Eisold <github@eisold.family>\n"
 "Language-Team: \n"
@@ -18,37 +18,47 @@ msgstr ""
 "X-Poedit-Flags-xgettext: --add-comments=I18N:\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: MetaSearch.php:370
+#. I18N: Name of a module.
+#: MetaSearch.php:155
+msgid "MetaSearch"
+msgstr ""
+
+#. I18N: Description of this module
+#: MetaSearch.php:167
+msgid "A custom module to support \"Metasuche\" of CompGen."
+msgstr ""
+
+#: MetaSearch.php:367
 msgid "The provided secret key is too short. Please provide a minimum length of 8 characters."
 msgstr ""
 
-#: MetaSearch.php:376
+#: MetaSearch.php:373
 msgid "The provided secret key contains characters, which are not accepted. Please provide a different key."
 msgstr ""
 
-#: MetaSearch.php:400
+#: MetaSearch.php:397
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr ""
 
-#: MetaSearch.php:468
+#: MetaSearch.php:465
 #, php-format
 msgid "The preferences for the custom module \"%s\" were sucessfully updated to the new module version %s."
 msgstr ""
 
-#: MetaSearch.php:630
+#: MetaSearch.php:627
 msgid "No key provided. For checking of the access rights, it is mandatory to provide a key as parameter in the URL."
 msgstr ""
 
-#: MetaSearch.php:634
+#: MetaSearch.php:631
 msgid "Key not accepted. Access denied."
 msgstr ""
 
-#: MetaSearch.php:638
+#: MetaSearch.php:635
 msgid "Key (encrypted) not accepted. Access denied."
 msgstr ""
 
-#: MetaSearch.php:654
+#: MetaSearch.php:651
 #, php-format
 msgid "Tree %s is not a valid public tree name."
 msgstr ""
