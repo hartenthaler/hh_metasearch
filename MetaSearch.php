@@ -79,9 +79,6 @@ class MetaSearch extends AbstractModule implements
     // Module file name
     public const CUSTOM_MODULE          = 'hh_metasearch';
 
-    // Module description
-    public const CUSTOM_DESCRIPTION     = 'A custom module to support "Metasuche" of CompGen.';
-
 	// Author of custom module
 	public const CUSTOM_AUTHOR 		    = 'Hermann Hartenthaler';
 	
@@ -155,7 +152,7 @@ class MetaSearch extends AbstractModule implements
      */
     public function title(): string
     {
-        return /* I18N: Name of a module. */ I18N::translate(self::CUSTOM_TITLE);
+        return /* I18N: Name of a module. */ I18N::translate('MetaSearch');
     }
 
     /**
@@ -167,7 +164,7 @@ class MetaSearch extends AbstractModule implements
      */
     public function description(): string
     {
-        return /* I18N: Description of this module */ I18N::translate(self::CUSTOM_DESCRIPTION);
+        return /* I18N: Description of this module */ I18N::translate('A custom module to support "Metasuche" of CompGen.');
     }
 
     /**
@@ -408,7 +405,7 @@ class MetaSearch extends AbstractModule implements
      * save the user preferences for all parameters related to the trees
      *
      * @param array $params configuration parameters
-
+     */
     private function postAdminActionTrees(array $params)
     {
         $order = implode(",", $params['order']);
@@ -428,7 +425,7 @@ class MetaSearch extends AbstractModule implements
      * set default values in case the settings are not stored in the database yet
      *
      * @return array<string,object> of ordered objects with name and status (enabled/disabled)
-
+     */
     private function getUsedTrees(): array
     {
         $listTrees = $this->all();
@@ -449,7 +446,6 @@ class MetaSearch extends AbstractModule implements
         }
         return $shownParts;
     }
-    */
 
     /**
      * Check if module version is new and start update activities if needed

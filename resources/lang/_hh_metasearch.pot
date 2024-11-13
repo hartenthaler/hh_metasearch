@@ -1,11 +1,12 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: hh metasearch\n"
 "POT-Creation-Date: 2024-11-12 11:41+0100\n"
-"PO-Revision-Date: 2024-11-12 11:43+0100\n"
+"PO-Revision-Date: 2024-11-12 10:06+0100\n"
 "Last-Translator: Holger Eisold <github@eisold.family>\n"
 "Language-Team: \n"
-"Language: de\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,132 +21,132 @@ msgstr ""
 #. I18N: Name of a module.
 #: MetaSearch.php:155
 msgid "MetaSearch"
-msgstr "Metasuche"
+msgstr ""
 
 #. I18N: Description of this module
 #: MetaSearch.php:167
 msgid "A custom module to support \"Metasuche\" of CompGen."
-msgstr "Ein benutzerdefiniertes Modul um die \"Metasuche\" von CompGen zu unterstützen."
+msgstr ""
 
 #: MetaSearch.php:367
 msgid "The provided secret key is too short. Please provide a minimum length of 8 characters."
-msgstr "Der angegebene Autorisierungs-Schlüssel ist zu kurz. Bitte geben Sie mindestens eine Länge von 8 Zeichen ein."
+msgstr ""
 
 #: MetaSearch.php:373
 msgid "The provided secret key contains characters, which are not accepted. Please provide a different key."
-msgstr "Der eingegebene Autorisierungs-Schlüssel enthält Schriftzeichen, welche nicht akzeptiert werden. Bitte geben Sie einen anderen Autorisierungs-Schlüssel ein."
+msgstr ""
 
 #: MetaSearch.php:397
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
-msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
+msgstr ""
 
 #: MetaSearch.php:465
 #, php-format
 msgid "The preferences for the custom module \"%s\" were sucessfully updated to the new module version %s."
-msgstr "Die Einstellungen für das benutzerdefinierte Modul \"%s\" wurden für die neue Modul-Version %s aktualisiert."
+msgstr ""
 
 #: MetaSearch.php:627
 msgid "No key provided. For checking of the access rights, it is mandatory to provide a key as parameter in the URL."
-msgstr "Kein Autorisierungs-Schlüssel übergeben. Zum Überprüfen der Zugriffsrechte, ist die Angabe eines Autorisierungs-Schlüssels als URL-Parameter erforderlich."
+msgstr ""
 
 #: MetaSearch.php:631
 msgid "Key not accepted. Access denied."
-msgstr "Autorisierungs-Schlüssel nicht akzeptiert. Zugriff verweigert."
+msgstr ""
 
 #: MetaSearch.php:635
 msgid "Key (encrypted) not accepted. Access denied."
-msgstr "Autorisierungs-Schlüssel (verschlüsselt) nicht akzeptiert. Zugriff verweigert."
+msgstr ""
 
 #: MetaSearch.php:651
 #, php-format
 msgid "Tree %s is not a valid public tree name."
-msgstr "Stammbaum \"%s\" ist kein gültiger öffentlicher Name."
+msgstr ""
 
 #: resources/views/alert.phtml:22
 msgid "Custom module"
-msgstr "Benutzerdefiniertes Modul"
+msgstr ""
 
 #: resources/views/settings.phtml:26
 msgid "Control panel"
-msgstr "Verwaltung"
+msgstr ""
 
 #: resources/views/settings.phtml:38
 msgid "Currently, the authorization key is not encrypted. This option is less secure and should only be used in local environments. Otherwise, please activate encryption of the authorization key."
-msgstr "Aktuell ist der Autorisierungs-Schlüssel nicht verschlüsselt. Diese Einstellung ist weniger sicher und sollte nur in einer lokalen Umgebung mit begrenzten Benutzern verwendet werden. Andernfalls, aktivieren sie bitte die Verschlüsselung des Autorisierungs-Schlüssels."
+msgstr ""
 
 #: resources/views/settings.phtml:44
 msgid "The authorization key is empty or not available"
-msgstr "Der Autorisierungs-Schlüssel ist leer oder nicht verfügbar"
+msgstr ""
 
 #: resources/views/settings.phtml:48
 msgid "Settings for authorization key"
-msgstr "Einstellungen für den Autorisierungs-Schlüssel"
+msgstr ""
 
 #: resources/views/settings.phtml:51
 msgid "Current authorization key"
-msgstr "Aktueller Autorisierungs-Schlüssel"
+msgstr ""
 
 #: resources/views/settings.phtml:54
 msgid "The authorization key cannot be shown, because encryption is activated. If you forgot the key, you have to create a new key."
-msgstr "Der Autorisierungs-Schlüssel kann nicht angezeigt werden, weil Verschlüsselung aktiviert ist. Wenn Sie den Schlüssel vergessen haben, müssen Sie einen neuen erzeugen."
+msgstr ""
 
 #: resources/views/settings.phtml:64
 msgid "New authorization key"
-msgstr "Neuer Autorisierungs-Schlüssel"
+msgstr ""
 
 #: resources/views/settings.phtml:73
 msgid "Activate encryption of the authorization key"
-msgstr "Verschlüsselung des Autorisierungs-Schlüssel aktivieren"
+msgstr ""
 
 #: resources/views/settings.phtml:76
 msgid "Activate"
-msgstr "Aktivieren"
+msgstr ""
 
 #: resources/views/settings.phtml:78
 msgid "The encryption of the authorization key is more secure, because the authorization key is not visible to anyone and also encrypted in the database. However, the authorization key is not readable any more (e.g. for other administrators) and cannot be recovered if it is forgotten."
-msgstr "Die Verschlüsselung des Autorisierungs-Schlüssels ist sicherer, weil der Autorisierungs-Schlüssel nicht mehr sichtbar ist und auch in der Datenbank verschlüsselt wird. Allerdings ist der Autorisierungs-Schüssel in diesem Fall nicht mehr lesbar (z.B. für andere Administratoren) und kann auch nicht mehr wiederhergestellt werden, wenn er vergessen wurde."
+msgstr ""
 
 #: resources/views/settings.phtml:84
 msgid "Database Identification"
-msgstr "Datenbankidentifikation"
+msgstr ""
 
 #: resources/views/settings.phtml:87
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: resources/views/settings.phtml:95
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: resources/views/settings.phtml:102
 msgid "Define maximum number of hits per tree"
-msgstr "Maximale Trefferanzahl pro Baum festlegen"
+msgstr ""
 
 #: resources/views/settings.phtml:105
 msgid "greater or equal 1"
-msgstr "größer oder gleich 1"
+msgstr ""
 
 #: resources/views/settings.phtml:112
 msgid "Select trees to be searched"
-msgstr "Zu durchsuchende Bäume auswählen"
+msgstr ""
 
 #: resources/views/settings.phtml:117
 msgid "Tree"
-msgstr "Stammbaum"
+msgstr ""
 
 #: resources/views/settings.phtml:118 resources/views/settings.phtml:140
 msgid "Enabled"
-msgstr "Aktivieren"
+msgstr ""
 
 #: resources/views/settings.phtml:120 resources/views/settings.phtml:147
 msgid "Move up"
-msgstr "Hoch schieben"
+msgstr ""
 
 #: resources/views/settings.phtml:121 resources/views/settings.phtml:152
 msgid "Move down"
-msgstr "Runter schieben"
+msgstr ""
 
 #: resources/views/settings.phtml:166
 msgid "Save"
-msgstr "Speichern"
+msgstr ""
