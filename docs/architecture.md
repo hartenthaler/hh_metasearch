@@ -72,6 +72,8 @@ Requests are handled by `MetaSearch::handle()`.
 
 The route also registers a route-local `MetaSearchApiMiddleware`. This lets the API endpoint answer external POST requests before the global webtrees CSRF middleware runs. Without this, form-encoded MetaSearch POST requests without a webtrees CSRF token are redirected before the endpoint handler is reached.
 
+With Pretty URLs enabled, the endpoint URL is `/MetaSearch`. Request parameters must be sent as form-encoded POST fields, or as query parameters for manual testing. They must not be appended as path segments.
+
 ## Request parameters
 
 The endpoint accepts form-encoded request parameters. `MetaSearch::requestParameter()` reads the parsed POST body first and falls back to query parameters for compatibility.

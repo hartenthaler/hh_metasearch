@@ -38,6 +38,8 @@ use Fisharebest\Webtrees\View;
  * @var  string                 $database_name  name of this webtrees database
  * @var  string		            $secret_key     secret key that allows access to this webtrees service
  * @var  bool		            $use_hash       encrypt the secret key
+ * @var  string                 $endpoint_url   URL of the MetaSearch endpoint
+ * @var  string                 $query_example_url URL example with query parameters
  * @var  int                    $minimum_secret_key_length
  * @var  int                    $max_hit        maximum number of search hits per webtrees tree
  * @var  array<string,object>   $tree_list      ordered list of trees that should be included in the search; index is the tree name
@@ -92,6 +94,24 @@ use Fisharebest\Webtrees\View;
             <p class="mb-0">
                 <?= I18N::translate('Anyone who knows this key can access the MetaSearch endpoint for all enabled public trees. Use a long random value and share it only with the external service.') ?>
             </p>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3 col-form-label wt-page-options-label">
+                <?= I18N::translate('MetaSearch endpoint') ?>
+            </div>
+            <div class="col-sm-9 wt-page-options-value">
+                <input class="form-control" type="text" value="<?= e($endpoint_url) ?>" readonly>
+                <div class="form-text">
+                    <?= I18N::translate('Send requests as HTTP POST with form parameters, for example: %s', 'key=YOUR_KEY&lastname=Muster&placename=Berlin') ?>
+                </div>
+                <div class="form-text">
+                    <?= I18N::translate('For manual tests, query parameters are also accepted:') ?>
+                </div>
+                <input class="form-control mt-2" type="text" value="<?= e($query_example_url) ?>" readonly>
+                <div class="form-text">
+                    <?= I18N::translate('Do not put parameters into the path. Use ?key=... or POST form fields, not /key=... .') ?>
+                </div>
+            </div>
         </div>
 
         <h3><?= I18N::translate('Database Identification') ?></h3>

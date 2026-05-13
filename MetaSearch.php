@@ -216,7 +216,7 @@ class MetaSearch extends AbstractModule implements
             ->get(static::class, self::ROUTE_URL, $this)
             ->allows(RequestMethodInterface::METHOD_POST)
             ->extras(['middleware' => [new MetaSearchApiMiddleware($this)]]);
-			
+
         // Here is also a good place to register any views (templates) used by the module.
         // This command allows the module to use: view($this->name() . '::', 'fish')
         // to access the file ./resources/views/fish.phtml
@@ -383,7 +383,8 @@ class MetaSearch extends AbstractModule implements
 
         $this->layout = 'layouts' . DIRECTORY_SEPARATOR . 'administration';
 
-		$tree_list = $this->getConfiguredTrees();
+		$tree_list    = $this->getConfiguredTrees();
+        $endpoint_url = route(static::class);
 
         return $this->viewResponse(
             $this->name() . '::settings',
@@ -393,6 +394,8 @@ class MetaSearch extends AbstractModule implements
                 self::PREF_DATABASE_NAME    => $this->getPreference(self::PREF_DATABASE_NAME, ''),      // tbd is there a better default value available?
                 self::PREF_SECRET_KEY       => $this->getPreference(self::PREF_SECRET_KEY, ''),
                 self::PREF_USE_HASH         => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
+                'endpoint_url'              => $endpoint_url,
+                'query_example_url'         => $endpoint_url . (str_contains($endpoint_url, '?') ? '&' : '?') . 'key=YOUR_KEY&lastname=Muster',
                 'minimum_secret_key_length' => self::MIN_SECRET_KEY_LENGTH,
                 self::PREF_MAX_HIT		    => $this->getPreference(self::PREF_MAX_HIT, strval(self::PREF_MAX_HIT_DEFAULT)),
                 'tree_list'                 => $tree_list,

@@ -114,6 +114,8 @@ The route is:
 /MetaSearch
 ```
 
+The module settings page shows the endpoint URL for the current webtrees URL mode.
+
 Typical request:
 
 ```text
@@ -127,6 +129,8 @@ key=KEY&trees=TREE1,TREE2&lastname=NAME&placename=PLACE&placeid=GOV&since=YYYY-M
 ```
 
 Depending on the webtrees installation path and URL rewriting, the route parameter may need to be adapted.
+
+Do not put parameters into the path, such as `/MetaSearch/key=...` or `/module/_hh_metasearch_/key=...`. Use HTTP POST form fields, or query parameters such as `/MetaSearch?key=...` for manual tests.
 
 ### Parameters
 
