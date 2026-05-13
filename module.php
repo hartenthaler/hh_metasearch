@@ -28,9 +28,6 @@ declare(strict_types=1);
 
 namespace Hartenthaler\Webtrees\Module\MetaSearch;
 
-use function app;
-
 require __DIR__ . '/MetaSearch.php';
-require __DIR__ . '/MetaSearchService.php';
 
-return app(MetaSearch::class);
+return new MetaSearch();
