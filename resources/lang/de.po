@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: hh_metasearch\n"
-"POT-Creation-Date: 2026-05-13 16:54+0200\n"
-"PO-Revision-Date: 2026-05-13 16:55+0200\n"
+"POT-Creation-Date: 2026-05-13 18:19+0200\n"
+"PO-Revision-Date: 2026-05-13 18:20+0200\n"
 "Last-Translator: Hermann Hartenthaler <hermann@hartenthaler.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -15,7 +15,12 @@ msgstr ""
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: MetaSearch.php:428
+#: MetaSearch.php:249
+msgid "A custom module to support \"Metasuche\" in the genealogy net."
+msgstr ""
+"Ein Erweiterungsmodul zur Unterstützung der „Metasuche“ im Genealogienetz."
+
+#: MetaSearch.php:425
 #, php-format
 msgid ""
 "The provided authorization key is too short. Please provide a minimum length "
@@ -24,16 +29,16 @@ msgstr ""
 "Der angegebene Autorisierungs-Schlüssel ist zu kurz. Bitte geben Sie "
 "mindestens %s Zeichen ein."
 
-#: MetaSearch.php:433
+#: MetaSearch.php:430
 msgid "The authorization key was replaced."
 msgstr "Der Autorisierungsschlüssel wurde ersetzt."
 
-#: MetaSearch.php:445
+#: MetaSearch.php:442
 #, php-format
 msgid "The preferences for the module \"%s\" were updated."
 msgstr "Die Einstellungen für das Modul \"%s\" wurden aktualisiert."
 
-#: MetaSearch.php:531
+#: MetaSearch.php:528
 #, php-format
 msgid ""
 "The authorization key for the custom module \"%s\" was converted to secure "
@@ -42,46 +47,46 @@ msgstr ""
 "Der Autorisierungsschlüssel für das benutzerdefinierte Modul „%s“ wurde in "
 "eine sichere Hash-Speicherung umgewandelt."
 
-#: MetaSearch.php:611 MetaSearch.php:621 MetaSearch.php:646 MetaSearch.php:681
+#: MetaSearch.php:608 MetaSearch.php:618 MetaSearch.php:643 MetaSearch.php:678
 #, php-format
 msgid "The parameter \"%s\" is invalid."
 msgstr "Der Parameter \"%s\" ist ungültig."
 
-#: MetaSearch.php:694
+#: MetaSearch.php:691
 #, php-format
 msgid "The parameter \"%s\" must use the format yyyy-mm-dd."
 msgstr "Der Parameter \"%s\" muss das Format yyyy-mm.dd verwenden."
 
-#: MetaSearch.php:702
+#: MetaSearch.php:700
 #, php-format
 msgid "The parameter \"%s\" is not a valid Gregorian date."
 msgstr "Der Parameter \"%s\" ist kein gültiges gregorianisches Datum."
 
-#: MetaSearch.php:709
+#: MetaSearch.php:707
 #, php-format
 msgid "The parameter \"%s\" must not be in the future."
 msgstr "Der Parameter \"%s\" darf nicht in der Zukunft liegen."
 
-#: MetaSearch.php:718
+#: MetaSearch.php:716
 #, php-format
 msgid "The parameter \"%s\" contains invalid UTF-8."
 msgstr "Der Parameter \"%s\" enthält ungültiges URF-8."
 
-#: MetaSearch.php:725
+#: MetaSearch.php:723
 #, php-format
 msgid "The parameter \"%s\" contains invalid control characters."
 msgstr "Der Parameter \"%s\" enthält ungültige Steuerzeichen."
 
-#: MetaSearch.php:732
+#: MetaSearch.php:730
 #, php-format
 msgid "The parameter \"%s\" is too long."
 msgstr "Der Parameter \"%s\" ist zu lang."
 
-#: MetaSearch.php:785
+#: MetaSearch.php:783
 msgid "Access denied."
 msgstr "Zugang verweigert."
 
-#: MetaSearch.php:788
+#: MetaSearch.php:786
 msgid ""
 "No key provided. For checking of the access rights, it is mandatory to "
 "provide a key as request parameter."
@@ -89,20 +94,20 @@ msgstr ""
 "Es wurde kein Schlüssel angegeben. Zur Überprüfung der Zugriffsrechte muss "
 "zwingend ein Schlüssel als Anfrageparameter angegeben werden."
 
-#: MetaSearch.php:791
+#: MetaSearch.php:789
 msgid "Key not accepted. Access denied."
 msgstr "Autorisierungs-Schlüssel nicht akzeptiert. Zugriff verweigert."
 
-#: MetaSearch.php:811
+#: MetaSearch.php:809
 #, php-format
 msgid "Tree %s is not a valid public tree name."
 msgstr "Der Baum %s entspricht nicht dem Baumnamen eines öffentlichen Baums."
 
-#: MetaSearch.php:1225
+#: MetaSearch.php:1223
 msgid "Birth"
 msgstr ""
 
-#: MetaSearch.php:1230
+#: MetaSearch.php:1228
 msgid "Death"
 msgstr ""
 
@@ -110,31 +115,31 @@ msgstr ""
 msgid "Custom module"
 msgstr ""
 
-#: resources/views/settings.phtml:26
+#: resources/views/settings.phtml:48
 msgid "Control panel"
 msgstr ""
 
-#: resources/views/settings.phtml:38
+#: resources/views/settings.phtml:60
 msgid "The authorization key is empty or not available"
 msgstr "Der Autorisierungsschlüssel ist leer oder nicht verfügbar"
 
-#: resources/views/settings.phtml:42
+#: resources/views/settings.phtml:64
 msgid "Settings for authorization key"
 msgstr "Einstellungen für den Autorisierungsschlüssel"
 
-#: resources/views/settings.phtml:45
+#: resources/views/settings.phtml:67
 msgid "Current authorization key"
 msgstr "Aktueller Autorisierungs-Schlüssel"
 
-#: resources/views/settings.phtml:49
+#: resources/views/settings.phtml:71
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
-#: resources/views/settings.phtml:51
+#: resources/views/settings.phtml:73
 msgid "Configured"
 msgstr "Konfiguriert"
 
-#: resources/views/settings.phtml:53
+#: resources/views/settings.phtml:75
 msgid ""
 "The authorization key is stored as a one-way hash and cannot be displayed. "
 "Enter a new key below to replace it."
@@ -143,11 +148,11 @@ msgstr ""
 "angezeigt werden. Geben Sie unten einen neuen Schlüssel ein, um ihn zu "
 "ersetzen."
 
-#: resources/views/settings.phtml:60
+#: resources/views/settings.phtml:82
 msgid "New authorization key"
 msgstr "Neuer Autorisierungsschlüssel"
 
-#: resources/views/settings.phtml:65
+#: resources/views/settings.phtml:87
 #, php-format
 msgid ""
 "Leave this field empty to keep the current key. Minimum length: %s "
@@ -156,7 +161,7 @@ msgstr ""
 "Lassen Sie dieses Feld leer, um den aktuellen Schlüssel beizubehalten. "
 "Mindestlänge: %s Zeichen."
 
-#: resources/views/settings.phtml:71
+#: resources/views/settings.phtml:93
 msgid ""
 "Anyone who knows this key can access the MetaSearch endpoint for all enabled "
 "public trees. Use a long random value and share it only with the external "
@@ -166,42 +171,42 @@ msgstr ""
 "aktivierten öffentlichen Bäume zugreifen. Verwenden Sie einen langen "
 "Zufallswert und geben Sie ihn nur an den externen Dienst weiter."
 
-#: resources/views/settings.phtml:75
+#: resources/views/settings.phtml:97
 msgid "Database Identification"
 msgstr "Datenbank-Kennung"
 
-#: resources/views/settings.phtml:78
+#: resources/views/settings.phtml:100
 msgid "Name"
 msgstr ""
 
-#: resources/views/settings.phtml:85
+#: resources/views/settings.phtml:107
 msgid "Define maximum number of hits per tree"
 msgstr "Festlegung der maximalen Trefferanzahl pro Baum"
 
-#: resources/views/settings.phtml:88
+#: resources/views/settings.phtml:110
 msgid "greater or equal 1"
 msgstr "größer oder gleich 1"
 
-#: resources/views/settings.phtml:95
+#: resources/views/settings.phtml:117
 msgid "Select trees to be searched"
 msgstr "Wähle die zu durchsuchenden Bäume aus"
 
-#: resources/views/settings.phtml:100
+#: resources/views/settings.phtml:122
 msgid "Tree"
 msgstr ""
 
-#: resources/views/settings.phtml:101 resources/views/settings.phtml:123
+#: resources/views/settings.phtml:123 resources/views/settings.phtml:145
 msgid "Enabled"
 msgstr ""
 
-#: resources/views/settings.phtml:103 resources/views/settings.phtml:130
+#: resources/views/settings.phtml:125 resources/views/settings.phtml:152
 msgid "Move up"
 msgstr ""
 
-#: resources/views/settings.phtml:104 resources/views/settings.phtml:135
+#: resources/views/settings.phtml:126 resources/views/settings.phtml:157
 msgid "Move down"
 msgstr ""
 
-#: resources/views/settings.phtml:149
+#: resources/views/settings.phtml:171
 msgid "Save"
 msgstr ""

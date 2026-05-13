@@ -1,5 +1,31 @@
 <?php
 
+/**
+ * MetaSearch - hh_metasearch (webtrees custom module)
+ *
+ * Function: supports MetaSuche at https://meta.genealogy.net/.
+ * see https://wiki.genealogy.net/Metasuche/neue_Schnittstelle
+ *
+ * Copyright (C) 2023 Hermann Hartenthaler
+ *
+ * webtrees: online genealogy / web based family history software
+ * Copyright (C) 2023 webtrees development team
+ *                    <http://webtrees.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 namespace Hartenthaler\Webtrees\Module\MetaSearch;
 
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
@@ -15,10 +41,6 @@ use Fisharebest\Webtrees\View;
  * @var  int                    $minimum_secret_key_length
  * @var  int                    $max_hit        maximum number of search hits per webtrees tree
  * @var  array<string,object>   $tree_list      ordered list of trees that should be included in the search; index is the tree name
- */
-
-/**
- * tbd Möglichkeit zum Löschen des secret key schaffen
  */
 
 ?>

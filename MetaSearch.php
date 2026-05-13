@@ -156,47 +156,44 @@ class MetaSearch extends AbstractModule implements
      */
 
     // Module title 
-    public const CUSTOM_TITLE           = 'MetaSearch';
+    public const string CUSTOM_TITLE            = 'MetaSearch';
 
     // Module file name
-    public const CUSTOM_MODULE          = 'hh_metasearch';
-
-    // Module description
-    public const CUSTOM_DESCRIPTION     = 'A custom module to support "Metasuche" of CompGen.';
+    public const string CUSTOM_MODULE           = 'hh_metasearch';
 
 	// Author of custom module
-	public const CUSTOM_AUTHOR 		    = 'Hermann Hartenthaler';
+	public const string CUSTOM_AUTHOR 		    = 'Hermann Hartenthaler';
 	
 	// GitHub repository
-	public const GITHUB_REPO 		    = 'hartenthaler/' . self::CUSTOM_MODULE;
+	public const string GITHUB_REPO 		    = 'hartenthaler/' . self::CUSTOM_MODULE;
 
     // Custom module website
-    public const CUSTOM_WEBSITE         = 'https://github.com/' . self::GITHUB_REPO . '/';
+    public const string CUSTOM_WEBSITE          = 'https://github.com/' . self::GITHUB_REPO . '/';
 	
 	// Custom module version
-	public const CUSTOM_VERSION 	    = '2.1.18.0';
+	public const string CUSTOM_VERSION 	        = '2.2.6.0';
 
 	// GitHub API URL to get the information about the latest releases
-	public const GITHUB_API_LATEST_VERSION  = 'https://api.github.com/repos/'. self::GITHUB_REPO . '/releases/latest';
-	public const GITHUB_API_TAG_NAME_PREFIX = '"tag_name":"v';
+	public const string GITHUB_API_LATEST_VERSION  = 'https://api.github.com/repos/'. self::GITHUB_REPO . '/releases/latest';
+	public const string GITHUB_API_TAG_NAME_PREFIX = '"tag_name":"v';
 	
 	// Route
-	protected const ROUTE_URL 		    = '/' . self::CUSTOM_TITLE;
+	protected const string ROUTE_URL 		    = '/' . self::CUSTOM_TITLE;
 
     // Preferences, Settings
-	public const PREF_MODULE_VERSION 	= 'module_version'; //tbd wozu?
-	public const PREF_SECRET_KEY 		= 'secret_key';
-	public const PREF_USE_HASH 			= 'use_hash';
-    public const MIN_SECRET_KEY_LENGTH  = 12;
-	public const PREF_MAX_HIT_DEFAULT	= 20;
-	public const PREF_MAX_HIT			= 'max_hit';
-	public const PREF_DATABASE_NAME		= 'database_name';                      // eg 'Ahnendatenbank Hartenthaler'
-	public const PREF_TREE_ORDER        = 'tree_order';
-    private const MAX_KEY_LENGTH        = 1024;
-    private const MAX_TEXT_LENGTH       = 255;
-    private const MAX_PLACEID_LENGTH    = 128;
-    private const MAX_TREE_LIST_LENGTH  = 1024;
-    private const MAX_TREE_NAME_LENGTH  = 255;
+	public const string PREF_MODULE_VERSION 	= 'module_version'; //tbd wozu?
+	public const string PREF_SECRET_KEY 		= 'secret_key';
+	public const string PREF_USE_HASH 			= 'use_hash';
+    public const int MIN_SECRET_KEY_LENGTH      = 12;
+	public const PREF_MAX_HIT_DEFAULT	        = 20;
+	public const string PREF_MAX_HIT			= 'max_hit';
+	public const string PREF_DATABASE_NAME		= 'database_name';                 // eg 'Ahnendatenbank Hartenthaler'
+	public const string PREF_TREE_ORDER         = 'tree_order';
+    private const int MAX_KEY_LENGTH            = 1024;
+    private const int MAX_TEXT_LENGTH           = 255;
+    private const int MAX_PLACEID_LENGTH        = 128;
+    private const int MAX_TREE_LIST_LENGTH      = 1024;
+    private const int MAX_TREE_NAME_LENGTH      = 255;
 
    /**
      * constructor
@@ -204,7 +201,7 @@ class MetaSearch extends AbstractModule implements
     public function __construct()
     {
 		// IMPORTANT - the constructor is called on *all* modules, even ones that are disabled.
-        // It is also called before the webtrees framework is initialised, and so other components will not yet exist.
+        // It is also called before the webtrees framework is initialized, and so other components will not yet exist.
     }
 
     /**
@@ -225,7 +222,7 @@ class MetaSearch extends AbstractModule implements
         // to access the file ./resources/views/fish.phtml
 
 		// register a namespace for the views
-		View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+		View::registerNamespace($this->name(), $this->resourcesFolder() . 'views' . DIRECTORY_SEPARATOR);
     }
 	
     /**
@@ -249,7 +246,7 @@ class MetaSearch extends AbstractModule implements
      */
     public function description(): string
     {
-        return /* I18N: Description of this module */ I18N::translate(self::CUSTOM_DESCRIPTION);
+        return /* I18N: Description of this module */ I18N::translate('A custom module to support "Metasuche" in the genealogy net.');
     }
 
     /**
@@ -373,7 +370,7 @@ class MetaSearch extends AbstractModule implements
     }
 
     /**
-     * view module settings in control panel
+     * view module settings in the control panel
      *
      * @param ServerRequestInterface $request
      *
@@ -396,7 +393,7 @@ class MetaSearch extends AbstractModule implements
                 self::PREF_DATABASE_NAME    => $this->getPreference(self::PREF_DATABASE_NAME, ''),      // tbd is there a better default value available?
                 self::PREF_SECRET_KEY       => $this->getPreference(self::PREF_SECRET_KEY, ''),
                 self::PREF_USE_HASH         => boolval($this->getPreference(self::PREF_USE_HASH, '1')),
-                'minimum_secret_key_length'  => self::MIN_SECRET_KEY_LENGTH,
+                'minimum_secret_key_length' => self::MIN_SECRET_KEY_LENGTH,
                 self::PREF_MAX_HIT		    => $this->getPreference(self::PREF_MAX_HIT, strval(self::PREF_MAX_HIT_DEFAULT)),
                 'tree_list'                 => $tree_list,
             ]
@@ -515,7 +512,7 @@ class MetaSearch extends AbstractModule implements
     }
 
     /**
-     * Check if module version is new and start update activities if needed
+     * Check if the module version is new and start update activities if needed
      *
      * @return void
      */
@@ -698,6 +695,7 @@ class MetaSearch extends AbstractModule implements
         $month = (int) $match[2];
         $day   = (int) $match[3];
 
+        // this check is only unprecise check by year
         if ($year < 1582 || !checkdate($month, $day, $year)) {
             throw new MetaSearchParameterException(I18N::translate('The parameter "%s" is not a valid Gregorian date.', 'since'));
         }

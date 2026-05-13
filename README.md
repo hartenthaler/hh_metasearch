@@ -248,11 +248,15 @@ This module requires **webtrees** version 2.2 or later.
 The version of PHP must match the requirements of the installed webtrees version.
 
 This module is currently maintained against webtrees 2.2.
+This module was tested with **webtrees** 2.2.6 version and all other custom modules.
 
 <a name="Installation"></a>
 ## 📥 Installation
 
-Manual installation:
+Install and use [Custom Module Manager](https://github.com/Jefferson49/CustomModuleManager) for an easy and convenient installation of **webtrees** custom modules.
++ Open the Custom Module Manager view in **webtrees**, scroll to "MetaSearch", and click on the "Install Module" button.
+
+**Manual installation**:
 
 1. Make a backup of files and database.
 1. Download or copy the module folder.
@@ -267,38 +271,34 @@ Manual installation:
 <a name="Upgrade"></a>
 ## ⬆️ Upgrade
 
-To update, replace the `hh_metasearch` files with the new version.
-
-After upgrading from an older version, open the module settings once.
-Old plain-text authorization keys are migrated to hashed storage automatically.
+To update, replace the `hh_metasearch` files with the new ones from the latest release.
 
 <a name="Translation"></a>
 ## 🌍 Translation
 
-Translations are stored in `resources/lang/`.
+You can help to translate this module.
+The language information is stored in the folder `resources/lang/`.
+You can edit those files and return them to me.
+You can do this via a pull request (if you know how) or by e-mail.
+Updated translations will be included in the next release of this module.
 
-The module uses gettext `.po` / `.mo` files.
-Translation files can be updated externally with tools such as Poedit.
-
-Currently available:
-
-- English fallback strings
-- German translation files
+There are the following translations available
+- English by @Hartenthaler
+- German by @Hartenthaler
 
 <a name="Support"></a>
 ## ❓ Support
 
-- <span style="font-weight: bold;">Issues: </span> Report errors by opening an issue in the GitHub repository.
-- <span style="font-weight: bold;">Forum: </span> General webtrees support can be found at the [webtrees forum](https://www.webtrees.net/).
+- <span style="font-weight: bold;">Issues: </span> You can report errors by raising an issue in this GitHub repository.
+- <span style="font-weight: bold;">Forum: </span>General webtrees support can be found at the [webtrees forum](https://www.webtrees.net/index.php/forum).
 
 <a name="License"></a>
 ## 📄 License
 
 This module uses GPL-3.0-or-later as a license.
 
-- Copyright (C) 2023-2026 Hermann Hartenthaler
-- Some ideas were originally inspired by custom module work around API-style webtrees access.
-- Derived from **webtrees** - Copyright webtrees development team.
+* Copyright (C) 2026 Hermann Hartenthaler
+* Derived from **webtrees** - Copyright 2026 webtrees development team.
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by
