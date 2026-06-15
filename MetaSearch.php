@@ -350,6 +350,33 @@ class MetaSearch extends AbstractModule implements
     }
 
     /**
+     * Privacy information consumed by hh_legal_notice.
+     *
+     * @return array{third_party_services:list<array{name:string,url:string,country:string,description:string,data:list<string>}>,security_measures:list<string>}
+     */
+    public function privacyNotices(): array
+    {
+        return [
+            'third_party_services' => [
+                [
+                    'name' => 'meta.genealogy.net',
+                    'url' => 'https://meta.genealogy.net/',
+                    'country' => 'Germany',
+                    'description' => I18N::translate('The MetaSearch module receives search requests from meta.genealogy.net and returns matching result data from the enabled public family trees.'),
+                    'data' => [
+                        I18N::translate('Search parameters submitted by meta.genealogy.net.'),
+                        I18N::translate('Matching names, places, dates, and links from enabled public family trees.'),
+                        I18N::translate('Technical request metadata required to process and protect the interface.'),
+                    ],
+                ],
+            ],
+            'security_measures' => [
+                I18N::translate('The MetaSearch interface is protected by a shared secret that is stored as a password hash.'),
+            ],
+        ];
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @param string $language
