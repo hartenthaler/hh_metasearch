@@ -231,3 +231,33 @@ msgstr ""
 #: resources/views/settings.phtml:191
 msgid "Save"
 msgstr ""
+
+#: MetaSearch.php:365
+msgid ""
+"The MetaSearch module receives search requests from meta.genealogy.net and "
+"returns matching result data from the enabled public family trees."
+msgstr ""
+"Das Modul MetaSearch empfängt Suchanfragen von meta.genealogy.net und "
+"liefert passende Treffer aus den aktivierten öffentlichen Stammbäumen zurück."
+
+#: MetaSearch.php:367
+msgid "Search parameters submitted by meta.genealogy.net."
+msgstr "Von meta.genealogy.net übermittelte Suchparameter."
+
+#: MetaSearch.php:368
+msgid "Matching names, places, dates, and links from enabled public family trees."
+msgstr ""
+"Passende Namen, Orte, Daten und Links aus aktivierten öffentlichen "
+"Stammbäumen."
+
+#: MetaSearch.php:369
+msgid "Technical request metadata required to process and protect the interface."
+msgstr ""
+"Technische Metadaten der Anfrage, die zur Verarbeitung und Absicherung der "
+"Schnittstelle benötigt werden."
+
+#: MetaSearch.php:374
+msgid "The MetaSearch interface is protected by a shared secret that is stored as a password hash."
+msgstr ""
+"Die MetaSearch-Schnittstelle ist durch ein gemeinsames Geheimnis geschützt, "
+"das als Passwort-Hash gespeichert wird."
