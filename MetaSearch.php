@@ -222,7 +222,7 @@ class MetaSearch extends AbstractModule implements
         // to access the file ./resources/views/fish.phtml
 
 		// register a namespace for the views
-		View::registerNamespace($this->name(), $this->resourcesFolder() . 'views' . DIRECTORY_SEPARATOR);
+		View::registerNamespace($this->name(), strtr($this->resourcesFolder() . 'views' . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, '/'));
     }
 	
     /**

@@ -77,10 +77,13 @@ Implemented:
 
 Not yet implemented:
 
-- final MetaSearch XML response validation against the CompGen specification
+- final MetaSearch XML response validation against the CompGen specification (Metasuche and Alerts)
+- details should be generated using additionally short place names
+- it is not clear if lastname is really a required parameter maybe a search for placename only (or placid only) is allowed too
 - tests
 
-Searches require `lastname`. `placename`, `placeid`, and `since` are used only as additional AND filters for visitor-visible individual entries.
+Searches require `lastname`. `placename`, `placeid`, and `since` are used only as additional AND filters
+for visitor-visible individual entries.
 
 <a name="Security"></a>
 ## 🔐 Security model
