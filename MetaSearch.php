@@ -359,7 +359,7 @@ class MetaSearch extends AbstractModule implements
         return [
             'third_party_services' => [
                 [
-                    'name' => 'meta.genealogy.net',
+                    'name' => 'Metasuche',
                     'url' => 'https://meta.genealogy.net/',
                     'country' => 'Germany',
                     'description' => I18N::translate('The MetaSearch module receives search requests from meta.genealogy.net and returns matching result data from the enabled public family trees.'),
