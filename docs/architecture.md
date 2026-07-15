@@ -253,6 +253,8 @@ Current behavior:
 - tree-specific database URLs are generated with the webtrees `TreePage` route helper, so they follow the site's pretty-URL setting
 - if no tree can be selected, the endpoint still returns one `database` element using the configured database name and the webtrees home-page route
 
+The CompGen interface description is currently ambiguous about whether `lastname` is mandatory or whether a standalone `placename` or `placeid` search is permitted. This is tracked in [issue #9](https://github.com/hartenthaler/hh_metasearch/issues/9). Until the interface has been clarified, the implementation continues to require `lastname` before returning entries.
+
 Search inputs:
 
 - `lastname`: implemented
@@ -270,8 +272,12 @@ Expected search behavior:
 
 ## Suggested next implementation steps
 
-1. Add focused tests for authorization, tree filtering, XML content type, XML response shape, and request validation.
-2. Add search tests with public/private sample records.
+The final interface validation is tracked in [issue #8](https://github.com/hartenthaler/hh_metasearch/issues/8):
+
+1. Prepare a webtrees tree with suitable public and private test data.
+2. Agree with Jesper Zedlitz how the Metasuche and Alerts services will exercise the endpoint.
+3. Validate authorization, tree filtering, search parameters, XML content type, and XML response shape against the real service.
+4. Add focused automated tests for the verified behavior.
 
 ## Security notes
 
