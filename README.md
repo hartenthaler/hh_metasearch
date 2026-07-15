@@ -1,6 +1,8 @@
 # 🔎 **webtrees** module for CompGen MetaSearch (hh_metasearch)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/hartenthaler/hh_metasearch?label=release)](https://github.com/hartenthaler/hh_metasearch/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/hartenthaler/hh_metasearch/total)](https://github.com/hartenthaler/hh_metasearch/releases)
 
 ![webtrees major version](https://img.shields.io/badge/webtrees-v2.2.x-green)
 
