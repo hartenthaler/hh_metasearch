@@ -1,6 +1,8 @@
 # 🔎 **webtrees** module for CompGen MetaSearch (hh_metasearch)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/hartenthaler/hh_metasearch?label=release)](https://github.com/hartenthaler/hh_metasearch/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/hartenthaler/hh_metasearch/total)](https://github.com/hartenthaler/hh_metasearch/releases)
 
 ![webtrees major version](https://img.shields.io/badge/webtrees-v2.2.x-green)
 
@@ -15,7 +17,7 @@ This Readme contains the following main sections
 
 - [Purpose](#Purpose)
 - [Scope](#Scope)
-- [Current status](#Status)
+- [Functions](#Functions)
 - [Security model](#Security)
 - [Usage and API](#Usage)
 - [XML response](#Results)
@@ -54,12 +56,10 @@ The module filters tree selection by webtrees tree preferences:
 
 This rule is applied whenever the configured tree list is read. If an administrator later makes a tree private, it automatically disappears from the effective MetaSearch tree list.
 
-<a name="Status"></a>
-## 🚧 Current status
+<a name="Functions"></a>
+## 🧰 Functions
 
-The module is not feature complete.
-
-Implemented:
+The module provides:
 
 - route registration for `/MetaSearch`
 - XML response
@@ -75,12 +75,10 @@ Implemented:
 - configurable default tree list
 - configurable database name and maximum hit count
 
-Not yet implemented:
+Open validation work and interface questions are tracked in GitHub:
 
-- final MetaSearch XML response validation against the CompGen specification (Metasuche and Alerts)
-- details should be generated using additionally short place names
-- it is not clear if lastname is really a required parameter maybe a search for placename only (or placid only) is allowed too
-- tests
+- [Validate the MetaSearch interface with a test tree](https://github.com/hartenthaler/hh_metasearch/issues/8)
+- [Clarify whether `lastname` is required](https://github.com/hartenthaler/hh_metasearch/issues/9)
 
 Searches require `lastname`. `placename`, `placeid`, and `since` are used only as additional AND filters
 for visitor-visible individual entries.
@@ -240,14 +238,6 @@ The authorization key is shown only as a status. It cannot be displayed after it
 
 Detailed architecture notes are maintained in [docs/architecture.md](docs/architecture.md).
 
-Short summary:
-
-- `module.php` loads and returns the module instance.
-- `MetaSearch.php` contains module metadata, settings handling, route handling, authorization, tree filtering, and response generation.
-- XML is generated with `DOMDocument` and returned through `Registry::responseFactory()->response(...)` with `Content-Type: text/xml`.
-- webtrees `TreeService` is used as the base source for tree objects, then filtered to visitor-public trees.
-- Tree-specific XML URLs are generated through webtrees route helpers, so they follow the site's pretty-URL setting.
-
 <a name="Requirements"></a>
 ## 📌 Requirements
 
@@ -260,14 +250,18 @@ This module was tested with **webtrees** 2.2.6 version and all other custom modu
 <a name="Installation"></a>
 ## 📥 Installation
 
-Install and use [Custom Module Manager](https://github.com/Jefferson49/CustomModuleManager) for an easy and convenient installation of **webtrees** custom modules.
-+ Open the Custom Module Manager view in **webtrees**, scroll to "MetaSearch", and click on the "Install Module" button.
+Install and use [Custom Module Manager](https://github.com/Jefferson49/CustomModuleManager) for an easy and convenient installation of **webtrees** custom modules:
+
+1. Open the Custom Module Manager view in **webtrees**, scroll to "MetaSearch", and click on the "Install Module" button.
 
 **Manual installation**:
 
 1. Make a backup of files and database.
 1. Download or copy the module folder.
 1. Place it in `webtrees/modules_v4/hh_metasearch`.
+
+**After installation with either method**:
+
 1. Login to **webtrees** as administrator.
 1. Open the control panel and enable the module.
 1. Open the module settings.
@@ -296,13 +290,13 @@ There are the following translations available
 <a name="Support"></a>
 ## ❓ Support
 
-- <span style="font-weight: bold;">Issues: </span> You can report errors by raising an issue in this GitHub repository.
+- <span style="font-weight: bold;">Issues: </span> You can report errors by raising an [issue in this GitHub repository](https://github.com/hartenthaler/hh_metasearch/issues).
 - <span style="font-weight: bold;">Forum: </span>General webtrees support can be found at the [webtrees forum](https://www.webtrees.net/index.php/forum).
 
 <a name="License"></a>
 ## 📄 License
 
-This module uses GPL-3.0-or-later as a license.
+This module uses [GPL-3.0-or-later](LICENSE.md) as a license.
 
 * Copyright (C) 2026 Hermann Hartenthaler
 * Derived from **webtrees** - Copyright 2026 webtrees development team.

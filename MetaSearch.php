@@ -171,7 +171,7 @@ class MetaSearch extends AbstractModule implements
     public const string CUSTOM_WEBSITE          = 'https://github.com/' . self::GITHUB_REPO . '/';
 	
 	// Custom module version
-	public const string CUSTOM_VERSION 	        = '2.2.6.0';
+	public const string CUSTOM_VERSION 	        = '2.2.6.1';
 
 	// GitHub API URL to get the information about the latest releases
 	public const string GITHUB_API_LATEST_VERSION  = 'https://api.github.com/repos/'. self::GITHUB_REPO . '/releases/latest';
